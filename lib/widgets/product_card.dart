@@ -80,41 +80,53 @@ class _ProductCardState extends State<ProductCard> {
                     builder: (context, state) {
                   int quantity = state.quantity;
 
-                  return SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        context.read<CartCubit>().addToCart(
-                              product.id,
-                              quantity,
-                              product.title,
-                              product.price,
-                              product.image,
-                            );
-                        context.read<CartCubit>().fetchCartItems();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.appBlue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: const Text(
-                        'Add to Cart',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.appWhite,
-                        ),
-                      ),
-                    ),
-                  );
+                  return AddToCartButton(product: product, quantity: quantity);
                 })
               ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AddToCartButton extends StatelessWidget {
+  final Product product;
+  final int quantity;
+  const AddToCartButton(
+      {super.key, required this.product, required this.quantity});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          context.read<CartCubit>().addToCart(
+                product.id,
+                quantity,
+                product.title,
+                product.price,
+                product.image,
+              );
+          context.read<CartCubit>().fetchCartItems();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.appBlue,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 12),
+        ),
+        child: const Text(
+          'Add to Cart',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: AppColors.appWhite,
+          ),
+        ),
       ),
     );
   }

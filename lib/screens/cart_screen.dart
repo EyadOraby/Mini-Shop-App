@@ -1,5 +1,6 @@
 import 'package:corporatica_task_2/widgets/appBar_widget.dart';
 import 'package:corporatica_task_2/widgets/cart_item_card.dart';
+import 'package:corporatica_task_2/widgets/loading_indicator.dart';
 import 'package:corporatica_task_2/widgets/total_cart_price_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +16,7 @@ class CartScreen extends StatelessWidget {
       body: BlocBuilder<CartCubit, CartState>(
         builder: (context, state) {
           if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const LoadingIndicator();
           } else if (state.cartItems == null || state.cartItems!.isEmpty) {
             return const Center(child: Text('Your cart is empty.'));
           } else {
