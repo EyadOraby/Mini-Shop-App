@@ -5,6 +5,7 @@ import 'package:corporatica_task_2/cubits/product_cubit.dart';
 import 'package:corporatica_task_2/screens/product_details_screen.dart';
 import 'package:corporatica_task_2/widgets/appBar_widget.dart';
 import 'package:corporatica_task_2/widgets/cart_floating_action_button.dart';
+import 'package:corporatica_task_2/widgets/loading_indicator.dart';
 import 'package:corporatica_task_2/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,9 +52,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
             child: BlocBuilder<ProductCubit, ProductState>(
               builder: (context, state) {
                 if (state.isLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const LoadingIndicator();
                 }
 
                 if (state.errorMessage != null) {
