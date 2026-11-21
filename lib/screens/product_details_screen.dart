@@ -163,6 +163,5 @@ class AddToCartButton extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
