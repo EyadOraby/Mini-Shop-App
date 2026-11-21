@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mini_shop/admin/admin_dashboard.dart';
 import 'package:mini_shop/app/theme.dart';
 import 'package:mini_shop/cubits/orders_cubit.dart';
 import 'package:mini_shop/cubits/product_cubit.dart';
@@ -33,6 +34,12 @@ class ShopScreen extends StatelessWidget {
                 floating: true,
                 title: const Text('Mini Shop'),
                 actions: [
+                  IconButton(
+                    tooltip: 'Store dashboard',
+                    onPressed: () => Navigator.of(context)
+                        .push(MaterialPageRoute<void>(builder: (_) => const AdminDashboard())),
+                    icon: const Icon(Icons.space_dashboard_outlined),
+                  ),
                   IconButton(
                     tooltip: 'Toggle dark mode',
                     onPressed: () => context.read<ThemeCubit>().toggle(),

@@ -43,6 +43,18 @@ class OrdersCubit extends Cubit<List<Order>> {
     _store.write(_key, next.map((o) => o.toJson()).toList());
     return order;
   }
+
+  /// Adds orders that already happened, e.g. sample data for the dashboard.
+  void addAll(List<Order> orders) {
+    final next = [...orders, ...state]..sort((a, b) => b.placedAt.compareTo(a.placedAt));
+    emit(next);
+    _store.write(_key, next.map((o) => o.toJson()).toList());
+  }
+
+  void clear() {
+    emit(const []);
+    _store.write(_key, const []);
+  }
 }
 
 /// Light or dark, remembered between visits.

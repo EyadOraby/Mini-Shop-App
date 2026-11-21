@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mini_shop/admin/admin_dashboard.dart';
 import 'package:mini_shop/app/theme.dart';
 import 'package:mini_shop/core/storage.dart';
 import 'package:mini_shop/cubits/cart_cubit.dart';
@@ -67,6 +68,8 @@ Widget screenFor(Uri? link) {
       return const Shell(initial: ShopTab.cart);
     case 'orders':
       return const Shell(initial: ShopTab.orders);
+    case 'admin':
+      return const AdminDashboard();
     case 'checkout':
       return const CheckoutScreen();
     case 'product':
