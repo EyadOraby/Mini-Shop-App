@@ -1,6 +1,6 @@
-import 'package:corporatica_task_2/constants/app_colors.dart';
-import 'package:corporatica_task_2/main.dart';
-import 'package:corporatica_task_2/models/cart_item_model.dart';
+import 'package:mini_shop/constants/app_colors.dart';
+import 'package:mini_shop/main.dart';
+import 'package:mini_shop/models/cart_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 

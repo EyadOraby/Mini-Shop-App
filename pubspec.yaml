@@ -1,5 +1,5 @@
-name: corporatica_task_2
-description: "A new Flutter project."
+name: mini_shop
+description: "Mini Shop: a Flutter shopping app with BLoC, Dio and an offline Hive cart."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -33,7 +33,6 @@ dependencies:
   dio: ^5.0.0
   hive_flutter: ^1.1.0
   flutter_bloc: ^8.1.2
-  path_provider: ^2.0.10  
 
 
 

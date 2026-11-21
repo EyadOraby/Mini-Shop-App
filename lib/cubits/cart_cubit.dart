@@ -1,7 +1,7 @@
-import 'package:corporatica_task_2/main.dart';
-import 'package:corporatica_task_2/models/cart_item_model.dart';
-import 'package:corporatica_task_2/repositories/cart_repository.dart';
-import 'package:corporatica_task_2/repositories/product_repository.dart';
+import 'package:mini_shop/main.dart';
+import 'package:mini_shop/models/cart_item_model.dart';
+import 'package:mini_shop/repositories/cart_repository.dart';
+import 'package:mini_shop/repositories/product_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

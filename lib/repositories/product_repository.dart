@@ -1,5 +1,5 @@
-import 'package:corporatica_task_2/models/product_model.dart';
-import 'package:corporatica_task_2/services/api_service.dart';
+import 'package:mini_shop/models/product_model.dart';
+import 'package:mini_shop/services/api_service.dart';
 
 class ProductRepository {
   final ApiService apiService;

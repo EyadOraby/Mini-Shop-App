@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:corporatica_task_2/constants/app_colors.dart';
+import 'package:mini_shop/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {

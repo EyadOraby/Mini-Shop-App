@@ -1,10 +1,10 @@
-import 'package:corporatica_task_2/widgets/appBar_widget.dart';
-import 'package:corporatica_task_2/widgets/cart_item_card.dart';
-import 'package:corporatica_task_2/widgets/loading_indicator.dart';
-import 'package:corporatica_task_2/widgets/total_cart_price_widget.dart';
+import 'package:mini_shop/widgets/appBar_widget.dart';
+import 'package:mini_shop/widgets/cart_item_card.dart';
+import 'package:mini_shop/widgets/loading_indicator.dart';
+import 'package:mini_shop/widgets/total_cart_price_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:corporatica_task_2/cubits/cart_cubit.dart';
+import 'package:mini_shop/cubits/cart_cubit.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});

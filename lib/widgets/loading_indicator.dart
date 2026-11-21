@@ -1,4 +1,4 @@
-import 'package:corporatica_task_2/constants/app_colors.dart';
+import 'package:mini_shop/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class LoadingIndicator extends StatelessWidget {

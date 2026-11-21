@@ -1,6 +1,6 @@
 {
-    "name": "corporatica_task_2",
-    "short_name": "corporatica_task_2",
+    "name": "Mini Shop",
+    "short_name": "Mini Shop",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

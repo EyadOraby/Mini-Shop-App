@@ -1,4 +1,4 @@
-import 'package:corporatica_task_2/constants/app_endpoints.dart';
+import 'package:mini_shop/constants/app_endpoints.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {

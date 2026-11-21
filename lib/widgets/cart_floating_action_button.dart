@@ -1,6 +1,6 @@
-import 'package:corporatica_task_2/constants/app_colors.dart';
-import 'package:corporatica_task_2/constants/app_routes.dart';
-import 'package:corporatica_task_2/cubits/cart_cubit.dart';
+import 'package:mini_shop/constants/app_colors.dart';
+import 'package:mini_shop/constants/app_routes.dart';
+import 'package:mini_shop/cubits/cart_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
