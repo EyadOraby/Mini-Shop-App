@@ -2,7 +2,11 @@ import 'package:mini_shop/constants/app_endpoints.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: AppEndpoints.baseUrl));
+  final Dio _dio = Dio(BaseOptions(
+    baseUrl: AppEndpoints.baseUrl,
+    connectTimeout: const Duration(seconds: 8),
+    receiveTimeout: const Duration(seconds: 10),
+  ));
 
   Future<Response> fetchAllProducts() async {
     try {

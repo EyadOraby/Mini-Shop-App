@@ -1,71 +1,117 @@
-import 'package:mini_shop/constants/app_routes.dart';
-import 'package:mini_shop/cubits/cart_cubit.dart';
-import 'package:mini_shop/cubits/product_cubit.dart';
-import 'package:mini_shop/cubits/quantity_cubit.dart';
-import 'package:mini_shop/models/cart_item_model.dart';
-import 'package:mini_shop/repositories/cart_repository.dart';
-import 'package:mini_shop/repositories/product_repository.dart';
-import 'package:mini_shop/screens/cart_screen.dart';
-import 'package:mini_shop/screens/product_details_screen.dart';
-import 'package:mini_shop/screens/product_list_screen.dart';
-import 'package:mini_shop/services/api_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mini_shop/app/theme.dart';
+import 'package:mini_shop/core/storage.dart';
+import 'package:mini_shop/cubits/cart_cubit.dart';
+import 'package:mini_shop/cubits/orders_cubit.dart';
+import 'package:mini_shop/cubits/product_cubit.dart';
+import 'package:mini_shop/cubits/wishlist_cubit.dart';
+import 'package:mini_shop/repositories/product_repository.dart';
+import 'package:mini_shop/screens/checkout_screen.dart';
+import 'package:mini_shop/screens/product_details_screen.dart';
+import 'package:mini_shop/screens/shell.dart';
+import 'package:mini_shop/services/api_service.dart';
 
-final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-    GlobalKey<ScaffoldMessengerState>();
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Works on Android, iOS, desktop and the web (IndexedDB).
   await Hive.initFlutter();
-
-  Hive.registerAdapter(CartItemAdapter());
-
-  runApp(const MyApp());
+  final store = await HiveStore.open('mini_shop');
+  runApp(MiniShopApp(store: store));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MiniShopApp extends StatelessWidget {
+  const MiniShopApp({super.key, required this.store, this.url});
+
+  final KeyValueStore store;
+
+  /// Overrides the page URL in tests.
+  final Uri? url;
 
   @override
   Widget build(BuildContext context) {
+    final link = url ?? (kIsWeb ? Uri.base : null);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ProductCubit(
-            repository: ProductRepository(apiService: ApiService()),
-          ),
+          create: (_) =>
+              ProductCubit(repository: ProductRepository(apiService: ApiService(), store: store))..fetchProducts(),
         ),
-        BlocProvider(
-          create: (context) => CartCubit(
-              repository: ProductRepository(apiService: ApiService()),
-              cartRepository: CartRepository()),
-        ),
-        BlocProvider(
-          create: (context) => QuantityCubit(),
-        ),
+        BlocProvider(create: (_) => CartCubit(store)),
+        BlocProvider(create: (_) => WishlistCubit(store)),
+        BlocProvider(create: (_) => OrdersCubit(store)),
+        BlocProvider(create: (_) => ThemeCubit(store)),
       ],
-      child: MaterialApp(
-        scaffoldMessengerKey: scaffoldMessengerKey,
-        debugShowCheckedModeBanner: false,
-        title: 'Mini Shop',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorSchemeSeed: const Color(0xFF4FB6A3),
-          brightness: Brightness.light,
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, mode) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Mini Shop',
+          theme: buildTheme(Brightness.light),
+          darkTheme: buildTheme(Brightness.dark),
+          themeMode: mode,
+          home: _DemoSeeder(link: link, child: screenFor(link)),
         ),
-        initialRoute: AppRoutes.productListScreenRoute,
-        routes: {
-          AppRoutes.productListScreenRoute: (context) =>
-              const ProductListScreen(),
-          AppRoutes.productDetailsScreenRoute: (context) =>
-              ProductDetailsScreen(
-                  productId: ModalRoute.of(context)!.settings.arguments as int),
-          AppRoutes.cartScreenRoute: (context) => const CartScreen(),
-        },
       ),
+    );
+  }
+}
+
+/// Opens a screen from the web URL, e.g. `?screen=cart` or `?screen=product&id=3`.
+Widget screenFor(Uri? link) {
+  final params = link?.queryParameters ?? const {};
+  switch (params['screen']) {
+    case 'wishlist':
+      return const Shell(initial: ShopTab.wishlist);
+    case 'cart':
+      return const Shell(initial: ShopTab.cart);
+    case 'orders':
+      return const Shell(initial: ShopTab.orders);
+    case 'checkout':
+      return const CheckoutScreen();
+    case 'product':
+      final id = int.tryParse(params['id'] ?? '');
+      if (id != null) return ProductDetailsScreen(productId: id);
+  }
+  return const Shell();
+}
+
+/// With `?demo=1`, fills the cart, wishlist and orders from the catalog
+/// once it loads, so the web demo can be explored without shopping first.
+class _DemoSeeder extends StatelessWidget {
+  const _DemoSeeder({required this.link, required this.child});
+
+  final Uri? link;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (link?.queryParameters['demo'] != '1') return child;
+    return BlocListener<ProductCubit, ProductState>(
+      listenWhen: (a, b) => a.products.isEmpty && b.products.isNotEmpty,
+      listener: (context, state) {
+        final cart = context.read<CartCubit>();
+        if (cart.state.items.isNotEmpty) return;
+        final p = state.products;
+        cart.add(p[0]);
+        cart.add(p[4], quantity: 2);
+        cart.add(p[8]);
+        final wishlist = context.read<WishlistCubit>();
+        for (final i in [1, 5, 9, 13]) {
+          if (!wishlist.state.contains(p[i].id)) wishlist.toggle(p[i].id);
+        }
+        final orders = context.read<OrdersCubit>();
+        if (orders.state.isEmpty) {
+          orders.place(
+            items: cart.state.items,
+            summary: cart.state.summary,
+            name: 'Demo Shopper',
+            address: '12 Nile Street, Cairo',
+            payment: 'Card',
+          );
+        }
+      },
+      child: child,
     );
   }
 }

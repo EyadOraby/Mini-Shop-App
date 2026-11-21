@@ -1,80 +1,86 @@
-import 'package:mini_shop/main.dart';
-import 'package:mini_shop/models/cart_item_model.dart';
-import 'package:mini_shop/repositories/cart_repository.dart';
-import 'package:mini_shop/repositories/product_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mini_shop/core/storage.dart';
+import 'package:mini_shop/logic/cart_summary.dart';
+import 'package:mini_shop/models/cart_item_model.dart';
+import 'package:mini_shop/models/product_model.dart';
 
 class CartState {
-  final List<CartItem>? cartItems;
-  final String? errorMessage;
-  final bool isLoading;
+  final List<CartItem> items;
+  final String? promoCode;
 
-  CartState({this.cartItems, this.errorMessage, this.isLoading = true});
+  const CartState({this.items = const [], this.promoCode});
+
+  CartSummary get summary => CartSummary.of(items, promoCode: promoCode);
+
+  int quantityOf(int productId) =>
+      items.where((i) => i.productId == productId).fold(0, (sum, i) => sum + i.quantity);
 }
 
+/// The cart, saved to the device after every change.
 class CartCubit extends Cubit<CartState> {
-  final ProductRepository repository;
-  final CartRepository cartRepository;
-
-  CartCubit({required this.repository, required this.cartRepository})
-      : super(CartState());
-
-  void fetchCartItems() async {
-    try {
-      emit(CartState(isLoading: true));
-      final cartItems = await cartRepository.getCartItems();
-      emit(CartState(cartItems: cartItems, isLoading: false));
-    } catch (e) {
-      emit(CartState(errorMessage: e.toString(), isLoading: false));
+  CartCubit(this._store) : super(const CartState()) {
+    final saved = _store.read(_key);
+    if (saved is List) {
+      emit(CartState(items: saved.map((e) => CartItem.fromJson(e as Map)).toList()));
     }
   }
 
-  void increaseQuantity(int productId) async {
-    final cartItems = await cartRepository.getCartItems();
-    final cartItem =
-        cartItems.firstWhere((item) => item.productId == productId);
-    final updatedItem = cartItem.copyWith(quantity: cartItem.quantity + 1);
+  static const _key = 'cart';
+  final KeyValueStore _store;
 
-    await cartRepository.updateCartItem(updatedItem);
-    fetchCartItems();
+  void _save(List<CartItem> items, {String? promoCode}) {
+    emit(CartState(items: items, promoCode: promoCode));
+    _store.write(_key, items.map((i) => i.toJson()).toList());
   }
 
-  void decreaseQuantity(int productId) async {
-    final cartItems = await cartRepository.getCartItems();
-    final cartItem =
-        cartItems.firstWhere((item) => item.productId == productId);
-
-    if (cartItem.quantity > 1) {
-      final updatedItem = cartItem.copyWith(quantity: cartItem.quantity - 1);
-      await cartRepository.updateCartItem(updatedItem);
+  void add(Product product, {int quantity = 1}) {
+    final items = [...state.items];
+    final index = items.indexWhere((i) => i.productId == product.id);
+    if (index >= 0) {
+      items[index] = items[index].copyWith(quantity: items[index].quantity + quantity);
     } else {
-      await cartRepository.removeFromCart(cartItem);
-      scaffoldMessengerKey.currentState?.showSnackBar(
-        SnackBar(
-          content: Text('${cartItem.name} has been removed from the cart'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }
-
-    fetchCartItems();
-  }
-
-  void addToCart(
-      int productId, int quantity, String name, double price, String imageUrl) {
-    final cartItem = CartItem(
-        productId: productId,
+      items.add(CartItem(
+        productId: product.id,
         quantity: quantity,
-        name: name,
-        price: price,
-        imageUrl: imageUrl);
-    cartRepository.addToCart(cartItem);
-    fetchCartItems();
+        name: product.title,
+        price: product.price,
+        imageUrl: product.image,
+      ));
+    }
+    _save(items, promoCode: state.promoCode);
   }
 
-  void removeFromCart(CartItem cartItem) async {
-    await cartRepository.removeFromCart(cartItem);
-    fetchCartItems();
+  /// Sets a quantity; zero or less removes the line.
+  void setQuantity(int productId, int quantity) {
+    final items = [
+      for (final i in state.items)
+        if (i.productId != productId) i else if (quantity > 0) i.copyWith(quantity: quantity),
+    ];
+    _save(items, promoCode: items.isEmpty ? null : state.promoCode);
   }
+
+  /// Removes a line and returns it, so the UI can offer undo.
+  CartItem? remove(int productId) {
+    final index = state.items.indexWhere((i) => i.productId == productId);
+    if (index < 0) return null;
+    final removed = state.items[index];
+    setQuantity(productId, 0);
+    return removed;
+  }
+
+  void restore(CartItem item) {
+    if (state.items.any((i) => i.productId == item.productId)) return;
+    _save([...state.items, item], promoCode: state.promoCode);
+  }
+
+  /// Applies a promo code; returns false if it isn't valid.
+  bool applyPromo(String code) {
+    final valid = promoCodes.containsKey(code.trim().toUpperCase());
+    if (valid) _save(state.items, promoCode: code.trim().toUpperCase());
+    return valid;
+  }
+
+  void clearPromo() => _save(state.items);
+
+  void clear() => _save(const []);
 }

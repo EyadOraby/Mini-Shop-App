@@ -8,31 +8,35 @@ A Flutter shopping app: browse a live product catalog, search and filter it, ope
 
 ## Features
 
-- **Catalog** from a REST API ([Fake Store API](https://fakestoreapi.com)) through Dio
-- **Search** by name, **category chips** and **sorting** (price either way, name), all combined
-- **Pull to refresh**, a loading state, and a friendly error with **Try again** when offline
-- **Product details** with a hero transition from the grid
-- **Cart** with quantities and a running total, **saved offline with Hive** on every platform, including the web
-- **Responsive grid** that adds columns on tablets and desktop browsers
-- Material 3 design
+- **Storefront** with search, category chips with icons, sorting, a promo banner and a responsive grid with ratings
+- **Product details** with a large photo, star rating and review count, perks, an expandable description, a quantity stepper, a sticky "Add to cart" bar and "You may also like"
+- **Wishlist** saved on the device, with a heart on every product
+- **Cart** with steppers, swipe to remove with undo, a free-shipping progress bar, promo codes (`MINI10`, `WELCOME20`) and an order summary
+- **Checkout** in three steps: validated delivery details, cash or card (demo), and a review, then an animated confirmation
+- **Orders** with a processing, shipped and delivered timeline
+- **Dark mode**, remembered between visits
+- **Works offline**: the catalog comes from the [Fake Store API](https://fakestoreapi.com), falls back to the last good copy, then to a copy bundled with the app
+- On the web, `?demo=1` fills the cart, wishlist and orders, and `?screen=cart`, `?screen=product&id=5` and similar open a screen directly
 
 ## Architecture
 
 ```
 lib/
-  cubits/        state (ProductCubit, CartCubit, QuantityCubit) with flutter_bloc
-  repositories/  ProductRepository (API) and CartRepository (Hive)
-  services/      ApiService: the Dio client
-  models/        Product and CartItem (with a generated Hive adapter)
-  screens/       product list, product details, cart
-  widgets/       cards, buttons and shared UI
+  app/           theme (light and dark)
+  core/          KeyValueStore: Hive in the app, in memory in tests
+  logic/         CartSummary: subtotal, promo discount, shipping and total
+  cubits/        products, cart, wishlist, orders and theme (flutter_bloc)
+  repositories/  ProductRepository with API, cache and bundled fallbacks
+  models/        Product, CartItem, Order
+  screens/       shell, shop, details, cart, checkout, orders and wishlist
+  widgets/       product card, rating stars, quantity stepper, empty states
 ```
 
-The UI only talks to cubits, cubits only talk to repositories, and repositories hide where data comes from, so the API or the storage can change without touching screens. Search, category and sort are kept in the cubit's state and applied in one place (`ProductState.filteredProducts`), which keeps them consistent and easy to test.
+Screens only talk to cubits; cubits keep state and save it through `KeyValueStore`, so every rule (pricing, promo codes, cart changes, order history, fallbacks) is tested without a device.
 
 ## Tests and CI
 
-`flutter test` covers JSON parsing and the catalog logic: loading, case-insensitive search, categories combined with search, every sort order, and errors that clear after a successful retry. GitHub Actions runs `flutter analyze`, the tests and a web build on every pull request, and publishes the web demo to GitHub Pages from `main`.
+`flutter test` covers the catalog (search, categories, sorting, retries and offline fallbacks), pricing and promo codes, the cart, wishlist, orders, theme and checkout validation. GitHub Actions runs `flutter analyze`, the tests and a web build on every pull request, and publishes the web demo to GitHub Pages from `main`.
 
 ## Run it
 
