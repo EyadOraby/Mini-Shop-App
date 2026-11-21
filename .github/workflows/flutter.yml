@@ -28,7 +28,7 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze --no-fatal-infos
       - run: flutter test
-      - run: flutter build web --release --base-href /Mini-Shop-App/
+      - run: flutter build web --release --base-href /Mini-Shop-App/ --pwa-strategy=none
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
