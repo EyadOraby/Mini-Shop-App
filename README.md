@@ -1,67 +1,45 @@
+# Mini Shop
 
-# **Flutter Shopping Cart Application**
+[![Flutter](https://github.com/EyadOraby/Mini-Shop-App/actions/workflows/flutter.yml/badge.svg)](https://github.com/EyadOraby/Mini-Shop-App/actions/workflows/flutter.yml)
 
-## **Description**
-This Flutter application is a fully functional shopping cart app that demonstrates key features of modern app development, including state management, API integration, and local data storage. The app leverages clean architecture principles, making it modular, scalable, and easy to maintain.
+A Flutter shopping app: browse a live product catalog, search and filter it, open product details and keep a cart that survives restarts.
 
-## **Features**
-- **Product Management**:
-  - Fetch and display products from a remote API.
-  - View detailed product information, including image, price, and description.
-  - Search for products locally by name.
+**Try it in the browser:** [eyadoraby.github.io/Mini-Shop-App](https://eyadoraby.github.io/Mini-Shop-App/)
 
-- **Shopping Cart**:
-  - Add products to the cart with adjustable quantities.
-  - Long press on a cart item to show a delete confirmation dialog.
-  - Remove individual items or clear all items in the cart with a single button.
-  - Real-time updates for item quantity and total price.
+## Features
 
-- **State Management**:
-  - Manage states using `Cubit` from the `flutter_bloc` package.
-  - Separate Cubits for handling products, cart operations, and quantity.
+- **Catalog** from a REST API ([Fake Store API](https://fakestoreapi.com)) through Dio
+- **Search** by name, **category chips** and **sorting** (price either way, name), all combined
+- **Pull to refresh**, a loading state, and a friendly error with **Try again** when offline
+- **Product details** with a hero transition from the grid
+- **Cart** with quantities and a running total, **saved offline with Hive** on every platform, including the web
+- **Responsive grid** that adds columns on tablets and desktop browsers
+- Material 3 design
 
-- **Local Storage**:
-  - Persist cart data using Hive for offline functionality.
-  - Cart data remains intact even after the app is restarted.
+## Architecture
 
-- **UI and UX**:
-  - Clean, responsive, and modern UI design.
-  - Interactive components such as long-press gestures and stylish buttons.
-
-## **Technologies Used**
-- **Flutter Framework**: For building a cross-platform app.
-- **Dio (v5.0.0)**: For API integration and HTTP requests.
-- **Hive Flutter (v1.1.0)**: For lightweight, local data storage.
-- **flutter_bloc (v8.1.2)**: For state management using the Bloc pattern.
-- **Path Provider (v2.0.10)**: For accessing file paths in the device.
-- **Build Runner (v2.4.13)**: For code generation during development.
-
-## **Setup Instructions**
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/EyadOraby/Mini-Shop-App.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd flutter-shopping-cart
-   ```
-3. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-4. Run the app:
-   ```bash
-   flutter run
-   ```
-
-## **Folder Structure**
 ```
 lib/
-├── cubits/              # State management using Cubit
-├── models/              # Data models (e.g., Product, CartItem)
-├── repositories/        # Repository layer for API and local data handling
-├── screens/             # UI screens (e.g., Product List, Cart Screen)
-├── services/            # API service for HTTP calls
-├── widgets/             # Reusable UI components
-└── main.dart            # Application entry point
+  cubits/        state (ProductCubit, CartCubit, QuantityCubit) with flutter_bloc
+  repositories/  ProductRepository (API) and CartRepository (Hive)
+  services/      ApiService: the Dio client
+  models/        Product and CartItem (with a generated Hive adapter)
+  screens/       product list, product details, cart
+  widgets/       cards, buttons and shared UI
 ```
+
+The UI only talks to cubits, cubits only talk to repositories, and repositories hide where data comes from, so the API or the storage can change without touching screens. Search, category and sort are kept in the cubit's state and applied in one place (`ProductState.filteredProducts`), which keeps them consistent and easy to test.
+
+## Tests and CI
+
+`flutter test` covers JSON parsing and the catalog logic: loading, case-insensitive search, categories combined with search, every sort order, and errors that clear after a successful retry. GitHub Actions runs `flutter analyze`, the tests and a web build on every pull request, and publishes the web demo to GitHub Pages from `main`.
+
+## Run it
+
+```bash
+flutter pub get
+flutter run            # a device or emulator
+flutter run -d chrome  # the web version
+```
+
+Requires Flutter with Dart 3.5 or later.
