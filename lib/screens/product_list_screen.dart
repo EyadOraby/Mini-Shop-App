@@ -175,7 +175,9 @@ class _ProductGrid extends StatelessWidget {
                     crossAxisCount: columns,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
-                    childAspectRatio: 0.5,
+                    // Cards have a fixed-height image, so a fixed row height
+                    // avoids empty space on wide screens.
+                    mainAxisExtent: 296,
                   ),
                   itemCount: products.length,
                   itemBuilder: (context, index) {
