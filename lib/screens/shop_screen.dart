@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_shop/admin/admin_dashboard.dart';
 import 'package:mini_shop/app/theme.dart';
@@ -32,16 +33,21 @@ class ShopScreen extends StatelessWidget {
             slivers: [
               SliverAppBar(
                 floating: true,
-                title: const Text('Mini Shop'),
+                title: Text(context.t('Mini Shop')),
                 actions: [
                   IconButton(
-                    tooltip: 'Store dashboard',
+                    tooltip: context.t('Language'),
+                    onPressed: () => context.read<LocaleCubit>().toggle(),
+                    icon: const Icon(Icons.translate_rounded),
+                  ),
+                  IconButton(
+                    tooltip: context.t('Store dashboard'),
                     onPressed: () => Navigator.of(context)
                         .push(MaterialPageRoute<void>(builder: (_) => const AdminDashboard())),
                     icon: const Icon(Icons.space_dashboard_outlined),
                   ),
                   IconButton(
-                    tooltip: 'Toggle dark mode',
+                    tooltip: context.t('Toggle dark mode'),
                     onPressed: () => context.read<ThemeCubit>().toggle(),
                     icon: Icon(Theme.of(context).brightness == Brightness.dark
                         ? Icons.light_mode_outlined
@@ -56,7 +62,7 @@ class ShopScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Find something you love',
+                      Text(context.t('Find something you love'),
                           style: TextStyle(color: scheme.onSurfaceVariant, fontWeight: FontWeight.w500)),
                       const SizedBox(height: 12),
                       Row(
@@ -65,19 +71,19 @@ class ShopScreen extends StatelessWidget {
                             child: TextField(
                               onChanged: cubit.filterProducts,
                               textInputAction: TextInputAction.search,
-                              decoration: const InputDecoration(
-                                hintText: 'Search products',
+                              decoration: InputDecoration(
+                                hintText: context.t('Search products'),
                                 prefixIcon: Icon(Icons.search_rounded),
                               ),
                             ),
                           ),
                           const SizedBox(width: 10),
                           PopupMenuButton<ProductSort>(
-                            tooltip: 'Sort',
+                            tooltip: context.t('Sort'),
                             initialValue: state.sort,
                             onSelected: cubit.sortBy,
                             itemBuilder: (_) => [
-                              for (final e in _sortLabels.entries) PopupMenuItem(value: e.key, child: Text(e.value)),
+                              for (final e in _sortLabels.entries) PopupMenuItem(value: e.key, child: Text(context.t(e.value))),
                             ],
                             child: Container(
                               width: 50,
@@ -107,14 +113,14 @@ class ShopScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       children: [
                         _CategoryChip(
-                          label: 'All',
+                          label: context.t('All'),
                           icon: Icons.apps_rounded,
                           selected: state.category == null,
                           onTap: () => cubit.selectCategory(null),
                         ),
                         for (final c in state.categories)
                           _CategoryChip(
-                            label: titleCase(c),
+                            label: context.t(titleCase(c)),
                             icon: categoryIcon(c),
                             selected: state.category == c,
                             onTap: () => cubit.selectCategory(c),
@@ -128,10 +134,10 @@ class ShopScreen extends StatelessWidget {
                 sliver: SliverToBoxAdapter(
                   child: Row(
                     children: [
-                      Text(state.category == null ? 'Popular now' : titleCase(state.category!),
+                      Text(state.category == null ? context.t('Popular now') : context.t(titleCase(state.category!)),
                           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
                       const Spacer(),
-                      Text('${products.length} items', style: TextStyle(color: scheme.onSurfaceVariant)),
+                      Text('${products.length} ${context.t('items')}', style: TextStyle(color: scheme.onSurfaceVariant)),
                     ],
                   ),
                 ),
@@ -143,22 +149,22 @@ class ShopScreen extends StatelessWidget {
                   hasScrollBody: false,
                   child: EmptyState(
                     icon: Icons.wifi_off_rounded,
-                    title: 'You seem to be offline',
+                    title: context.t('You seem to be offline'),
                     message: state.errorMessage!,
                     action: FilledButton.icon(
                       onPressed: cubit.fetchProducts,
                       icon: const Icon(Icons.refresh_rounded),
-                      label: const Text('Try again'),
+                      label: Text(context.t('Try again')),
                     ),
                   ),
                 )
               else if (products.isEmpty)
-                const SliverFillRemaining(
+                SliverFillRemaining(
                   hasScrollBody: false,
                   child: EmptyState(
                     icon: Icons.search_off_rounded,
-                    title: 'No matches',
-                    message: 'Try another search or category.',
+                    title: context.t('No matches'),
+                    message: context.t('Try another search or category.'),
                   ),
                 )
               else
@@ -203,14 +209,14 @@ class _PromoBanner extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(8)),
-                  child: const Text('New here?',
+                  child: Text(context.t('New here?'),
                       style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700)),
                 ),
                 const SizedBox(height: 8),
-                const Text('20% off your first order',
+                Text(context.t('20% off your first order'),
                     style: TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 4),
-                const Text('Use code WELCOME20 at checkout. Free shipping over \$100.',
+                Text(context.t('Use code WELCOME20 at checkout. Free shipping over \$100.'),
                     style: TextStyle(color: Colors.white70, fontSize: 12.5, height: 1.35)),
               ],
             ),

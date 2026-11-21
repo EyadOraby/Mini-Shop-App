@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_shop/app/theme.dart';
 import 'package:mini_shop/cubits/cart_cubit.dart';
@@ -38,7 +39,7 @@ class ProductCard extends StatelessWidget {
                       child: _RoundIcon(
                         icon: saved ? Icons.favorite_rounded : Icons.favorite_border_rounded,
                         color: saved ? coral : Colors.black54,
-                        tooltip: saved ? 'Remove from wishlist' : 'Save to wishlist',
+                        tooltip: saved ? context.t('Remove from wishlist') : context.t('Save to wishlist'),
                         onTap: () => context.read<WishlistCubit>().toggle(product.id),
                       ),
                     ),
@@ -67,14 +68,14 @@ class ProductCard extends StatelessWidget {
                     width: 36,
                     height: 36,
                     child: IconButton.filled(
-                      tooltip: 'Add to cart',
+                      tooltip: context.t('Add to cart'),
                       padding: EdgeInsets.zero,
                       iconSize: 20,
                       onPressed: () {
                         context.read<CartCubit>().add(product);
                         ScaffoldMessenger.of(context)
                           ..hideCurrentSnackBar()
-                          ..showSnackBar(SnackBar(content: Text('Added "${product.title}" to your cart')));
+                          ..showSnackBar(SnackBar(content: Text('${context.t('Added to your cart')}: ${product.title}')));
                       },
                       icon: const Icon(Icons.add_shopping_cart_rounded),
                     ),

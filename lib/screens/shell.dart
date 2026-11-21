@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_shop/cubits/cart_cubit.dart';
 import 'package:mini_shop/cubits/wishlist_cubit.dart';
@@ -39,15 +40,15 @@ class _ShellState extends State<Shell> {
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: [
-          const NavigationDestination(
+          NavigationDestination(
             icon: Icon(Icons.storefront_outlined),
             selectedIcon: Icon(Icons.storefront_rounded),
-            label: 'Shop',
+            label: context.t('Shop'),
           ),
           NavigationDestination(
             icon: Badge(isLabelVisible: saved > 0, label: Text('$saved'), child: const Icon(Icons.favorite_border_rounded)),
             selectedIcon: const Icon(Icons.favorite_rounded),
-            label: 'Wishlist',
+            label: context.t('Wishlist'),
           ),
           NavigationDestination(
             icon: Badge(
@@ -56,12 +57,12 @@ class _ShellState extends State<Shell> {
               child: const Icon(Icons.shopping_bag_outlined),
             ),
             selectedIcon: const Icon(Icons.shopping_bag_rounded),
-            label: 'Cart',
+            label: context.t('Cart'),
           ),
-          const NavigationDestination(
+          NavigationDestination(
             icon: Icon(Icons.receipt_long_outlined),
             selectedIcon: Icon(Icons.receipt_long_rounded),
-            label: 'Orders',
+            label: context.t('Orders'),
           ),
         ],
       ),

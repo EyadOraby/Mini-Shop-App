@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_shop/app/theme.dart';
 import 'package:mini_shop/cubits/cart_cubit.dart';
@@ -18,15 +19,15 @@ class CartScreen extends StatelessWidget {
       builder: (context, state) {
         final summary = state.summary;
         return Scaffold(
-          appBar: AppBar(title: Text(state.items.isEmpty ? 'Your cart' : 'Your cart (${summary.itemCount})')),
+          appBar: AppBar(title: Text(state.items.isEmpty ? context.t('Your cart') : '${context.t('Your cart')} (${summary.itemCount})')),
           body: state.items.isEmpty
               ? EmptyState(
                   icon: Icons.shopping_bag_outlined,
-                  title: 'Your cart is empty',
-                  message: 'Browse the shop and add something you like.',
+                  title: context.t('Your cart is empty'),
+                  message: context.t('Browse the shop and add something you like.'),
                   action: onShop == null
                       ? null
-                      : FilledButton.tonal(onPressed: onShop, child: const Text('Start shopping')),
+                      : FilledButton.tonal(onPressed: onShop, child: Text(context.t('Start shopping'))),
                 )
               : ListView(
                   padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
@@ -50,10 +51,10 @@ class CartScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(SnackBar(
-                                content: Text('Removed ${item.name}'),
+                                content: Text('${context.t('Removed')} ${item.name}'),
                                 action: removed == null
                                     ? null
-                                    : SnackBarAction(label: 'Undo', onPressed: () => cubit.restore(removed)),
+                                    : SnackBarAction(label: context.t('Undo'), onPressed: () => cubit.restore(removed)),
                               ));
                           },
                           child: Card(
@@ -110,7 +111,7 @@ class CartScreen extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
                     child: FilledButton(
                       onPressed: () => Navigator.of(context).push(CheckoutScreen.route()),
-                      child: Text('Checkout · ${money(summary.total)}'),
+                      child: Text('${context.t('Checkout')} · ${money(summary.total)}'),
                     ),
                   ),
                 ),
@@ -132,7 +133,7 @@ class _ShippingProgress extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Add ${money(summary.toFreeShipping)} more for free shipping',
+          Text('${context.t('Add')} ${money(summary.toFreeShipping)} ${context.t('more for free shipping')}',
               style: const TextStyle(fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
           ClipRRect(
@@ -171,8 +172,8 @@ class _PromoFieldState extends State<_PromoField> {
       return Card(
         child: ListTile(
           leading: const Icon(Icons.local_offer_rounded, color: brand),
-          title: Text('$applied applied'),
-          trailing: TextButton(onPressed: () => context.read<CartCubit>().clearPromo(), child: const Text('Remove')),
+          title: Text('$applied ${context.t('applied')}'),
+          trailing: TextButton(onPressed: () => context.read<CartCubit>().clearPromo(), child: Text(context.t('Remove'))),
         ),
       );
     }
@@ -180,15 +181,15 @@ class _PromoFieldState extends State<_PromoField> {
       controller: _controller,
       textCapitalization: TextCapitalization.characters,
       decoration: InputDecoration(
-        hintText: 'Promo code (try MINI10)',
+        hintText: context.t('Promo code (try MINI10)'),
         prefixIcon: const Icon(Icons.local_offer_outlined),
         errorText: _error,
         suffixIcon: TextButton(
           onPressed: () {
             final ok = context.read<CartCubit>().applyPromo(_controller.text);
-            setState(() => _error = ok ? null : 'That code is not valid');
+            setState(() => _error = ok ? null : context.t('That code is not valid'));
           },
-          child: const Text('Apply'),
+          child: Text(context.t('Apply')),
         ),
       ),
     );
@@ -218,11 +219,11 @@ class SummaryCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            row('Subtotal', money(summary.subtotal)),
-            if (summary.discount > 0) row('Discount (${summary.promoCode})', '-${money(summary.discount)}', color: brand),
-            row('Shipping', summary.shipping == 0 ? 'Free' : money(summary.shipping)),
+            row(context.t('Subtotal'), money(summary.subtotal)),
+            if (summary.discount > 0) row('${context.t('Discount')} (${summary.promoCode})', '-${money(summary.discount)}', color: brand),
+            row(context.t('Shipping'), summary.shipping == 0 ? context.t('Free') : money(summary.shipping)),
             const Divider(height: 20),
-            row('Total', money(summary.total), bold: true),
+            row(context.t('Total'), money(summary.total), bold: true),
           ],
         ),
       ),

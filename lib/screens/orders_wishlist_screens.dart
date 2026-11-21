@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_shop/cubits/orders_cubit.dart';
 import 'package:mini_shop/cubits/product_cubit.dart';
@@ -17,12 +18,12 @@ class WishlistScreen extends StatelessWidget {
     final products = context.watch<ProductCubit>().state.products.where((p) => ids.contains(p.id)).toList();
     final columns = (MediaQuery.sizeOf(context).width / 210).floor().clamp(2, 6);
     return Scaffold(
-      appBar: AppBar(title: const Text('Wishlist')),
+      appBar: AppBar(title: Text(context.t('Wishlist'))),
       body: products.isEmpty
-          ? const EmptyState(
+          ? EmptyState(
               icon: Icons.favorite_border_rounded,
-              title: 'Nothing saved yet',
-              message: 'Tap the heart on any product to keep it here.',
+              title: context.t('Nothing saved yet'),
+              message: context.t('Tap the heart on any product to keep it here.'),
             )
           : GridView.builder(
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
@@ -46,12 +47,12 @@ class OrdersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final orders = context.watch<OrdersCubit>().state;
     return Scaffold(
-      appBar: AppBar(title: const Text('Orders')),
+      appBar: AppBar(title: Text(context.t('Orders'))),
       body: orders.isEmpty
-          ? const EmptyState(
+          ? EmptyState(
               icon: Icons.receipt_long_outlined,
-              title: 'No orders yet',
-              message: 'Orders you place will show up here with their status.',
+              title: context.t('No orders yet'),
+              message: context.t('Orders you place will show up here with their status.'),
             )
           : ListView.separated(
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
@@ -72,7 +73,7 @@ class _OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final status = order.statusAt(DateTime.now());
     final scheme = Theme.of(context).colorScheme;
-    final steps = ['Processing', 'Shipped', 'Delivered'];
+    final steps = [context.t('Processing'), context.t('Shipped'), context.t('Delivered')];
     final reached = steps.indexOf(status);
     final d = order.placedAt;
     return Card(
@@ -88,13 +89,13 @@ class _OrderCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(color: scheme.primaryContainer, borderRadius: BorderRadius.circular(20)),
-                  child: Text(status,
+                  child: Text(context.t(status),
                       style: TextStyle(color: scheme.onPrimaryContainer, fontWeight: FontWeight.w700, fontSize: 12)),
                 ),
               ],
             ),
             const SizedBox(height: 4),
-            Text('${d.day}/${d.month}/${d.year} · ${order.itemCount} items · ${order.payment}',
+            Text('${d.day}/${d.month}/${d.year} · ${order.itemCount} ${context.t('items')} · ${order.payment}',
                 style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13)),
             const SizedBox(height: 12),
             SizedBox(
@@ -114,14 +115,14 @@ class _OrderCard extends StatelessWidget {
                   Icon(i <= reached ? Icons.check_circle_rounded : Icons.radio_button_unchecked,
                       size: 18, color: i <= reached ? scheme.primary : scheme.outline),
                   const SizedBox(width: 4),
-                  Text(steps[i], style: TextStyle(fontSize: 12, fontWeight: i <= reached ? FontWeight.w700 : FontWeight.w400)),
+                  Text(context.t(steps[i]), style: TextStyle(fontSize: 12, fontWeight: i <= reached ? FontWeight.w700 : FontWeight.w400)),
                   if (i < steps.length - 1)
                     Expanded(child: Divider(indent: 6, endIndent: 6, color: i < reached ? scheme.primary : scheme.outlineVariant)),
                 ],
               ],
             ),
             const SizedBox(height: 12),
-            Text('Total ${money(order.total)}', style: const TextStyle(fontWeight: FontWeight.w800)),
+            Text('${context.t('Total')} ${money(order.total)}', style: TextStyle(fontWeight: FontWeight.w800)),
           ],
         ),
       ),

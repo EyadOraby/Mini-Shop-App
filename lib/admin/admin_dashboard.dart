@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_shop/admin/sample_orders.dart';
 import 'package:mini_shop/cubits/orders_cubit.dart';
@@ -47,19 +48,19 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
     final content = Scaffold(
       appBar: AppBar(
-        title: Text(_items[_section.index].$3),
+        title: Text(context.t(_items[_section.index].$3)),
         actions: [
           PopupMenuButton<String>(
-            tooltip: 'Data',
+            tooltip: context.t('Data'),
             icon: const Icon(Icons.more_vert_rounded),
             onSelected: (v) {
               final cubit = context.read<OrdersCubit>();
               if (v == 'seed') cubit.addAll(sampleOrders(products, now, seed: orders.length + 7));
               if (v == 'clear') cubit.clear();
             },
-            itemBuilder: (_) => const [
-              PopupMenuItem(value: 'seed', child: Text('Add sample orders')),
-              PopupMenuItem(value: 'clear', child: Text('Clear all orders')),
+            itemBuilder: (_) => [
+              PopupMenuItem(value: 'seed', child: Text(context.t('Add sample orders'))),
+              PopupMenuItem(value: 'clear', child: Text(context.t('Clear all orders'))),
             ],
           ),
           const SizedBox(width: 8),
@@ -68,14 +69,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
       body: orders.isEmpty && _section != AdminSection.products
           ? EmptyState(
               icon: Icons.insights_rounded,
-              title: 'No sales yet',
+              title: context.t('No sales yet'),
               message: 'Place an order in the shop, or fill the dashboard with sample orders.',
               action: FilledButton.icon(
                 onPressed: products.isEmpty
                     ? null
                     : () => context.read<OrdersCubit>().addAll(sampleOrders(products, now)),
                 icon: const Icon(Icons.auto_awesome_rounded),
-                label: const Text('Add sample orders'),
+                label: Text(context.t('Add sample orders')),
               ),
             )
           : body,
@@ -85,7 +86,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               selectedIndex: _section.index,
               onDestinationSelected: (i) => setState(() => _section = AdminSection.values[i]),
               destinations: [
-                for (final i in _items) NavigationDestination(icon: Icon(i.$1), selectedIcon: Icon(i.$2), label: i.$3),
+                for (final i in _items) NavigationDestination(icon: Icon(i.$1), selectedIcon: Icon(i.$2), label: context.t(i.$3)),
               ],
             ),
     );
@@ -109,7 +110,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           ),
           destinations: [
             for (final i in _items)
-              NavigationRailDestination(icon: Icon(i.$1), selectedIcon: Icon(i.$2), label: Text(i.$3)),
+              NavigationRailDestination(icon: Icon(i.$1), selectedIcon: Icon(i.$2), label: Text(context.t(i.$3))),
           ],
         ),
         const VerticalDivider(width: 1),
@@ -130,14 +131,14 @@ class _Overview extends StatelessWidget {
     final width = MediaQuery.sizeOf(context).width;
     final kpiColumns = width >= 1100 ? 4 : 2;
     final kpis = [
-      _Kpi(Icons.payments_rounded, 'Revenue', money(stats.revenue)),
-      _Kpi(Icons.shopping_cart_checkout_rounded, 'Orders', '${stats.orders.length}'),
-      _Kpi(Icons.trending_up_rounded, 'Average order', money(stats.averageOrder)),
-      _Kpi(Icons.inventory_rounded, 'Units sold', '${stats.unitsSold}'),
+      _Kpi(Icons.payments_rounded, context.t('Revenue'), money(stats.revenue)),
+      _Kpi(Icons.shopping_cart_checkout_rounded, context.t('Orders'), '${stats.orders.length}'),
+      _Kpi(Icons.trending_up_rounded, context.t('Average order'), money(stats.averageOrder)),
+      _Kpi(Icons.inventory_rounded, context.t('Units sold'), '${stats.unitsSold}'),
     ];
     final charts = [
-      _Panel(title: 'Revenue, last 7 days', child: _BarChart(values: stats.dailyRevenue(now), now: now)),
-      _Panel(title: 'Sales by category', child: _CategoryBars(entries: stats.revenueByCategory)),
+      _Panel(title: context.t('Revenue, last 7 days'), child: _BarChart(values: stats.dailyRevenue(now), now: now)),
+      _Panel(title: context.t('Sales by category'), child: _CategoryBars(entries: stats.revenueByCategory)),
     ];
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -162,7 +163,7 @@ class _Overview extends StatelessWidget {
         else ...[charts[0], const SizedBox(height: 12), charts[1]],
         const SizedBox(height: 12),
         _Panel(
-          title: 'Order status',
+          title: context.t('Order status'),
           child: Wrap(
             spacing: 12,
             runSpacing: 12,
@@ -173,7 +174,7 @@ class _Overview extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         _Panel(
-          title: 'Recent orders',
+          title: context.t('Recent orders'),
           child: Column(
             children: [for (final o in stats.orders.take(5)) _OrderRow(order: o, now: now)],
           ),
@@ -315,7 +316,7 @@ class _CategoryBars extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(child: Text(titleCase(e.key), style: const TextStyle(fontWeight: FontWeight.w600))),
+                    Expanded(child: Text(context.t(titleCase(e.key)), style: const TextStyle(fontWeight: FontWeight.w600))),
                     Text(money(e.value), style: TextStyle(color: scheme.onSurfaceVariant)),
                   ],
                 ),
@@ -355,7 +356,7 @@ class _StatusPill extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: count == null ? 4 : 10),
       decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(20)),
       child: Text(
-        count == null ? status : '$status · $count',
+        count == null ? context.t(status) : '${context.t(status)} · $count',
         style: TextStyle(color: color, fontWeight: FontWeight.w700, fontSize: 12),
       ),
     );
@@ -375,7 +376,7 @@ class _OrderRow extends StatelessWidget {
       onTap: () => _showOrder(context, order, now),
       leading: CircleAvatar(child: Text(order.name.isEmpty ? '?' : order.name[0])),
       title: Text(order.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-      subtitle: Text('${order.id} · ${order.itemCount} items'),
+      subtitle: Text('${order.id} · ${order.itemCount} ${context.t('items')}'),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -421,12 +422,12 @@ void _showOrder(BuildContext context, Order order, DateTime now) {
             const Divider(height: 16),
             Align(
               alignment: Alignment.centerRight,
-              child: Text('Total ${money(order.total)}', style: const TextStyle(fontWeight: FontWeight.w800)),
+              child: Text('${context.t('Total')} ${money(order.total)}', style: TextStyle(fontWeight: FontWeight.w800)),
             ),
           ],
         ),
       ),
-      actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close'))],
+      actions: [TextButton(onPressed: () => Navigator.pop(context), child: Text(context.t('Close')))],
     ),
   );
 }
@@ -464,12 +465,12 @@ class _ProductsTableState extends State<_ProductsTable> {
             scrollDirection: Axis.horizontal,
             child: DataTable(
               columnSpacing: 24,
-              columns: const [
-                DataColumn(label: Text('Product')),
-                DataColumn(label: Text('Category')),
-                DataColumn(label: Text('Price'), numeric: true),
-                DataColumn(label: Text('Rating'), numeric: true),
-                DataColumn(label: Text('Sold'), numeric: true),
+              columns: [
+                DataColumn(label: Text(context.t('Product'))),
+                DataColumn(label: Text(context.t('Category'))),
+                DataColumn(label: Text(context.t('Price')), numeric: true),
+                DataColumn(label: Text(context.t('Rating')), numeric: true),
+                DataColumn(label: Text(context.t('Sold')), numeric: true),
               ],
               rows: [
                 for (final p in rows)
@@ -484,7 +485,7 @@ class _ProductsTableState extends State<_ProductsTable> {
                         ),
                       ],
                     )),
-                    DataCell(Text(titleCase(p.category))),
+                    DataCell(Text(context.t(titleCase(p.category)))),
                     DataCell(Text(money(p.price))),
                     DataCell(Text('${p.rating.toStringAsFixed(1)} (${p.ratingCount})')),
                     DataCell(Text('${widget.sold[p.id] ?? 0}')),
@@ -515,13 +516,13 @@ class _OrdersTable extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: DataTable(
               showCheckboxColumn: false,
-              columns: const [
-                DataColumn(label: Text('Order')),
-                DataColumn(label: Text('Customer')),
-                DataColumn(label: Text('Date')),
-                DataColumn(label: Text('Items'), numeric: true),
-                DataColumn(label: Text('Total'), numeric: true),
-                DataColumn(label: Text('Status')),
+              columns: [
+                DataColumn(label: Text(context.t('Order'))),
+                DataColumn(label: Text(context.t('Customer'))),
+                DataColumn(label: Text(context.t('Date'))),
+                DataColumn(label: Text(context.t('Items')), numeric: true),
+                DataColumn(label: Text(context.t('Total')), numeric: true),
+                DataColumn(label: Text(context.t('Status'))),
               ],
               rows: [
                 for (final o in orders)

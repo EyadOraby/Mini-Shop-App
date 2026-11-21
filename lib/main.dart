@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mini_shop/admin/admin_dashboard.dart';
 import 'package:mini_shop/admin/sample_orders.dart';
@@ -37,23 +38,39 @@ class MiniShopApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) =>
-              ProductCubit(repository: ProductRepository(apiService: ApiService(), store: store))..fetchProducts(),
+          create: (_) => ProductCubit(
+              repository:
+                  ProductRepository(apiService: ApiService(), store: store))
+            ..fetchProducts(),
         ),
         BlocProvider(create: (_) => CartCubit(store)),
         BlocProvider(create: (_) => WishlistCubit(store)),
         BlocProvider(create: (_) => OrdersCubit(store)),
         BlocProvider(create: (_) => ThemeCubit(store)),
+        BlocProvider(
+            create: (_) =>
+                LocaleCubit(store, override: link?.queryParameters['lang'])),
       ],
-      child: BlocBuilder<ThemeCubit, ThemeMode>(
-        builder: (context, mode) => MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Mini Shop',
-          theme: buildTheme(Brightness.light),
-          darkTheme: buildTheme(Brightness.dark),
-          themeMode: mode,
-          home: _DemoSeeder(link: link, child: screenFor(link)),
-        ),
+      child: Builder(
+        builder: (context) {
+          final mode = context.watch<ThemeCubit>().state;
+          final locale = context.watch<LocaleCubit>().state;
+          return MaterialApp(
+            locale: locale,
+            supportedLocales: const [Locale('en'), Locale('ar')],
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            debugShowCheckedModeBanner: false,
+            title: 'Mini Shop',
+            theme: buildTheme(Brightness.light),
+            darkTheme: buildTheme(Brightness.dark),
+            themeMode: mode,
+            home: _DemoSeeder(link: link, child: screenFor(link)),
+          );
+        },
       ),
     );
   }

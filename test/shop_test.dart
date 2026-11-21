@@ -120,6 +120,13 @@ void main() {
     });
   });
 
+  test('language toggles, is remembered, and ?lang= wins', () {
+    final store = MemoryStore();
+    LocaleCubit(store).toggle();
+    expect(LocaleCubit(store).state.languageCode, 'ar');
+    expect(LocaleCubit(store, override: 'en').state.languageCode, 'en');
+  });
+
   test('theme toggles and is remembered', () {
     final store = MemoryStore();
     ThemeCubit(store).toggle();

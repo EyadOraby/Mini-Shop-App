@@ -69,3 +69,17 @@ class ThemeCubit extends Cubit<ThemeMode> {
     _store.write('dark', dark);
   }
 }
+
+/// English or Arabic, remembered between visits. `?lang=ar` on the web wins.
+class LocaleCubit extends Cubit<Locale> {
+  LocaleCubit(this._store, {String? override})
+      : super(Locale(override == 'ar' || override == 'en' ? override! : (_store.read('lang') as String? ?? 'en')));
+
+  final KeyValueStore _store;
+
+  void toggle() {
+    final next = state.languageCode == 'ar' ? 'en' : 'ar';
+    emit(Locale(next));
+    _store.write('lang', next);
+  }
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_shop/app/theme.dart';
 import 'package:mini_shop/cubits/cart_cubit.dart';
@@ -65,18 +66,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     final summary = context.watch<CartCubit>().state.summary;
     return Scaffold(
-      appBar: AppBar(title: const Text('Checkout')),
+      appBar: AppBar(title: Text(context.t('Checkout'))),
       body: Form(
         key: _form,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
           children: [
-            const _Step(number: 1, title: 'Delivery details'),
+            _Step(number: 1, title: context.t('Delivery details')),
             TextFormField(
               controller: _name,
               textInputAction: TextInputAction.next,
               autofillHints: const [AutofillHints.name],
-              decoration: const InputDecoration(labelText: 'Full name', prefixIcon: Icon(Icons.person_outline)),
+              decoration: InputDecoration(labelText: context.t('Full name'), prefixIcon: Icon(Icons.person_outline)),
               validator: (v) => required(v, 'name'),
             ),
             const SizedBox(height: 12),
@@ -84,7 +85,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               controller: _address,
               textInputAction: TextInputAction.next,
               autofillHints: const [AutofillHints.streetAddressLine1],
-              decoration: const InputDecoration(labelText: 'Street address', prefixIcon: Icon(Icons.home_outlined)),
+              decoration: InputDecoration(labelText: context.t('Street address'), prefixIcon: Icon(Icons.home_outlined)),
               validator: (v) => required(v, 'address'),
             ),
             const SizedBox(height: 12),
@@ -94,7 +95,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: TextFormField(
                     controller: _city,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(labelText: 'City', prefixIcon: Icon(Icons.location_city_outlined)),
+                    decoration: InputDecoration(labelText: context.t('City'), prefixIcon: Icon(Icons.location_city_outlined)),
                     validator: (v) => required(v, 'city'),
                   ),
                 ),
@@ -104,14 +105,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     controller: _phone,
                     keyboardType: TextInputType.phone,
                     autofillHints: const [AutofillHints.telephoneNumber],
-                    decoration: const InputDecoration(labelText: 'Phone', prefixIcon: Icon(Icons.phone_outlined)),
+                    decoration: InputDecoration(labelText: context.t('Phone'), prefixIcon: Icon(Icons.phone_outlined)),
                     validator: validatePhone,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 24),
-            const _Step(number: 2, title: 'Payment'),
+            _Step(number: 2, title: context.t('Payment')),
             for (final (label, icon, note) in const [
               ('Cash on delivery', Icons.payments_outlined, 'Pay when your order arrives'),
               ('Card', Icons.credit_card_outlined, 'Demo only: no card is charged'),
@@ -129,8 +130,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: ListTile(
                     onTap: () => setState(() => _payment = label),
                     leading: Icon(icon),
-                    title: Text(label, style: const TextStyle(fontWeight: FontWeight.w700)),
-                    subtitle: Text(note),
+                    title: Text(context.t(label), style: TextStyle(fontWeight: FontWeight.w700)),
+                    subtitle: Text(context.t(note)),
                     trailing: Icon(
                       _payment == label ? Icons.radio_button_checked : Icons.radio_button_off,
                       color: Theme.of(context).colorScheme.primary,
@@ -139,7 +140,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
               ),
             const SizedBox(height: 14),
-            const _Step(number: 3, title: 'Review'),
+            _Step(number: 3, title: context.t('Review')),
             SummaryCard(summary: summary),
           ],
         ),
@@ -151,7 +152,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             onPressed: _placing || summary.itemCount == 0 ? null : _place,
             child: _placing
                 ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
-                : Text('Place order · ${money(summary.total)}'),
+                : Text('${context.t('Place order')} · ${money(summary.total)}'),
           ),
         ),
       ),
@@ -207,7 +208,7 @@ class OrderPlacedScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 28),
-              const Text('Order placed!', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
+              Text(context.t('Order placed!'), style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
               const SizedBox(height: 10),
               Text(
                 'Thanks, ${order.name.split(' ').first}. Order ${order.id} is on its way to ${order.address}.',
@@ -215,12 +216,12 @@ class OrderPlacedScreen extends StatelessWidget {
                 style: TextStyle(height: 1.5, color: Theme.of(context).colorScheme.onSurfaceVariant),
               ),
               const SizedBox(height: 8),
-              Text('${order.itemCount} items · ${money(order.total)} · ${order.payment}',
+              Text('${order.itemCount} ${context.t('items')} · ${money(order.total)} · ${order.payment}',
                   style: const TextStyle(fontWeight: FontWeight.w700)),
               const Spacer(),
               FilledButton(
                 onPressed: () => Navigator.of(context).popUntil((r) => r.isFirst),
-                child: const Text('Continue shopping'),
+                child: Text(context.t('Continue shopping')),
               ),
             ],
           ),

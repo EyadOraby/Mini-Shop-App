@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/app/strings.dart';
 import 'package:mini_shop/app/theme.dart';
 
 /// A product photo on a soft, always-light background (store photos are white).
@@ -91,14 +92,14 @@ class QuantityStepper extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        button(Icons.remove_rounded, value > min ? () => onChanged(value - 1) : null, 'Decrease'),
+        button(Icons.remove_rounded, value > min ? () => onChanged(value - 1) : null, context.t('Decrease')),
         SizedBox(
           width: compact ? 30 : 40,
           child: Text('$value',
               textAlign: TextAlign.center,
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: compact ? 14 : 16, color: scheme.onSurface)),
         ),
-        button(Icons.add_rounded, () => onChanged(value + 1), 'Increase'),
+        button(Icons.add_rounded, () => onChanged(value + 1), context.t('Increase')),
       ],
     );
   }

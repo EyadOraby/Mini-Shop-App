@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mini_shop/app/theme.dart';
 import 'package:mini_shop/cubits/cart_cubit.dart';
@@ -34,10 +35,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         appBar: AppBar(),
         body: state.isLoading
             ? const Center(child: CircularProgressIndicator())
-            : const EmptyState(
+            : EmptyState(
                 icon: Icons.inventory_2_outlined,
-                title: 'Product not found',
-                message: 'It may have been removed from the catalog.',
+                title: context.t('Product not found'),
+                message: context.t('It may have been removed from the catalog.'),
               ),
       );
     }
@@ -55,7 +56,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             foregroundColor: Colors.black87,
             actions: [
               IconButton(
-                tooltip: saved ? 'Remove from wishlist' : 'Save to wishlist',
+                tooltip: saved ? context.t('Remove from wishlist') : context.t('Save to wishlist'),
                 onPressed: () => context.read<WishlistCubit>().toggle(product.id),
                 icon: Icon(saved ? Icons.favorite_rounded : Icons.favorite_border_rounded, color: saved ? coral : null),
               ),
@@ -80,7 +81,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     children: [
                       Chip(
                         avatar: Icon(categoryIcon(product.category), size: 16),
-                        label: Text(titleCase(product.category)),
+                        label: Text(context.t(titleCase(product.category))),
                         visualDensity: VisualDensity.compact,
                       ),
                       RatingStars(rating: product.rating, count: product.ratingCount, size: 16),
@@ -93,17 +94,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   Text(money(product.price),
                       style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: scheme.primary)),
                   const SizedBox(height: 16),
-                  const Row(
+                  Row(
                     children: [
-                      _Perk(icon: Icons.local_shipping_outlined, text: 'Free over \$100'),
+                      _Perk(icon: Icons.local_shipping_outlined, text: context.t('Free over \$100')),
                       SizedBox(width: 10),
-                      _Perk(icon: Icons.replay_rounded, text: '30-day returns'),
+                      _Perk(icon: Icons.replay_rounded, text: context.t('30-day returns')),
                       SizedBox(width: 10),
-                      _Perk(icon: Icons.verified_user_outlined, text: 'Secure checkout'),
+                      _Perk(icon: Icons.verified_user_outlined, text: context.t('Secure checkout')),
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const Text('About this item', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+                  Text(context.t('About this item'), style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
                   const SizedBox(height: 8),
                   AnimatedSize(
                     duration: const Duration(milliseconds: 250),
@@ -116,11 +117,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   TextButton(
                     onPressed: () => setState(() => _expanded = !_expanded),
-                    child: Text(_expanded ? 'Show less' : 'Read more'),
+                    child: Text(_expanded ? context.t('Show less') : context.t('Read more')),
                   ),
                   if (related.isNotEmpty) ...[
                     const SizedBox(height: 12),
-                    const Text('You may also like', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+                    Text(context.t('You may also like'), style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
                     const SizedBox(height: 12),
                     SizedBox(
                       height: 290,
@@ -163,7 +164,7 @@ class _Perk extends StatelessWidget {
           children: [
             Icon(icon, size: 20, color: scheme.primary),
             const SizedBox(height: 4),
-            Text(text, textAlign: TextAlign.center, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
+            Text(context.t(text), textAlign: TextAlign.center, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
           ],
         ),
       ),
@@ -197,9 +198,9 @@ class _BuyBar extends StatelessWidget {
                   context.read<CartCubit>().add(product, quantity: quantity);
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
-                    ..showSnackBar(SnackBar(content: Text('Added $quantity to your cart')));
+                    ..showSnackBar(SnackBar(content: Text('${context.t('Added to your cart')}: $quantity')));
                 },
-                child: Text('Add to cart · ${money(product.price * quantity)}'),
+                child: Text('${context.t('Add to cart')} · ${money(product.price * quantity)}'),
               ),
             ),
           ],
