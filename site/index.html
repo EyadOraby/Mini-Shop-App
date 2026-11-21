@@ -3,25 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F8A7A'/%3E%3C/svg%3E">
 <title>Mini Shop</title>
 <meta name="description" content="Mini Shop is a Flutter store with an offline cart, checkout, order tracking and a dashboard for the owner.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--brand:#0F8A7A;--brand-soft:#E3F4F1;--coral:#FF6B57;--ink:#13201E;--muted:#5B6B68;--bg:#F6F7F5;--card:#fff;--line:#E4E8E6}
-@media (prefers-color-scheme:dark){:root{--brand:#4FD1BC;--brand-soft:#16302C;--ink:#EAF2F0;--muted:#9AB0AB;--bg:#0F1417;--card:#182025;--line:#25313A}}
+:root{--on-brand:#fff;--brand:#0F8A7A;--brand-soft:#E3F4F1;--coral:#FF6B57;--ink:#13201E;--muted:#5B6B68;--bg:#F6F7F5;--card:#fff;--line:#E4E8E6}
+@media (prefers-color-scheme:dark){:root{--on-brand:#0F1417;--brand:#4FD1BC;--brand-soft:#16302C;--ink:#EAF2F0;--muted:#9AB0AB;--bg:#0F1417;--card:#182025;--line:#25313A}}
 *{box-sizing:border-box;margin:0}
 body{font-family:"Plus Jakarta Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
 a{color:inherit}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
 nav{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
 .logo{display:flex;gap:10px;align-items:center;font-weight:800;font-size:20px;text-decoration:none}
-.logo span{width:34px;height:34px;border-radius:10px;background:var(--brand);display:grid;place-items:center;color:#fff}
+.logo span{width:34px;height:34px;border-radius:10px;background:var(--brand);display:grid;place-items:center;color:var(--on-brand)}
 nav .links{display:flex;gap:22px;font-weight:600;font-size:15px}
 nav .links a{text-decoration:none;color:var(--muted)}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:14px;font-weight:700;text-decoration:none;transition:transform .15s}
 .btn:hover{transform:translateY(-2px)}
-.btn.primary{background:var(--brand);color:#fff}
+.btn.primary{background:var(--brand);color:var(--on-brand)}
 .btn.ghost{border:1.5px solid var(--line);background:var(--card)}
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:48px 0 72px}
 .pill{display:inline-block;background:var(--brand-soft);color:var(--brand);font-weight:700;font-size:13px;padding:6px 12px;border-radius:999px;margin-bottom:18px}
