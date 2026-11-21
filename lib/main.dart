@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mini_shop/admin/admin_dashboard.dart';
+import 'package:mini_shop/admin/sample_orders.dart';
 import 'package:mini_shop/app/theme.dart';
 import 'package:mini_shop/core/storage.dart';
 import 'package:mini_shop/cubits/cart_cubit.dart';
@@ -112,6 +113,7 @@ class _DemoSeeder extends StatelessWidget {
             address: '12 Nile Street, Cairo',
             payment: 'Card',
           );
+          orders.addAll(sampleOrders(p, DateTime.now()));
         }
       },
       child: child,

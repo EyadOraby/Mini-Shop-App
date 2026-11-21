@@ -148,7 +148,7 @@ class _Overview extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          childAspectRatio: width >= 600 ? 2.4 : 1.5,
+          childAspectRatio: width >= 1100 ? 2.0 : (width >= 600 ? 2.6 : 1.4),
           children: kpis,
         ),
         const SizedBox(height: 12),
