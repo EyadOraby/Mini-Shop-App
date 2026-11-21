@@ -50,3 +50,30 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  android:
+    name: Build the Android app
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter build apk --release
+      - name: Publish the APK
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp build/app/outputs/flutter-apk/app-release.apk mini-shop.apk
+          gh release view android >/dev/null 2>&1 || gh release create android --title "Android app" --notes "Latest Android build of the main branch."
+          gh release upload android mini-shop.apk --clobber
