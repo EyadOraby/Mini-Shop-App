@@ -24,7 +24,7 @@ void main() {
   const screens = ['shop', 'product&id=4', 'wishlist', 'cart', 'checkout', 'orders', 'admin'];
 
   for (final lang in ['en', 'ar']) {
-    for (final size in [const Size(390, 844), const Size(1280, 800)]) {
+    for (final size in [const Size(390, 844), const Size(820, 1180), const Size(1280, 800)]) {
       for (final screen in screens) {
         testWidgets('$screen renders ($lang, ${size.width.toInt()}px)', (tester) async {
           tester.view.physicalSize = size;
