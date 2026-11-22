@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:makers_market/widgets/craft_art.dart';
 import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,7 +74,7 @@ class ShopScreen extends StatelessWidget {
                               textInputAction: TextInputAction.search,
                               decoration: InputDecoration(
                                 hintText: context.t('Search products'),
-                                prefixIcon: Icon(Icons.search_rounded),
+                                prefixIcon: const Icon(Icons.search_rounded),
                               ),
                             ),
                           ),

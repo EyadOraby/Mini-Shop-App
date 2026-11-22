@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makers_market/app/theme.dart';
@@ -97,14 +97,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   Row(
                     children: [
                       _Perk(icon: Icons.local_shipping_outlined, text: context.t('Free over EGP 2,000')),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       _Perk(icon: Icons.replay_rounded, text: context.t('30-day returns')),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       _Perk(icon: Icons.verified_user_outlined, text: context.t('Secure checkout')),
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Text(context.t('About this item'), style: TextStyle(fontSize: 17, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
+                  Text(context.t('About this item'), style: const TextStyle(fontSize: 17, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   AnimatedSize(
                     duration: const Duration(milliseconds: 250),
@@ -125,7 +125,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ],
                   if (related.isNotEmpty) ...[
                     const SizedBox(height: 12),
-                    Text(context.t('You may also like'), style: TextStyle(fontSize: 17, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
+                    Text(context.t('You may also like'), style: const TextStyle(fontSize: 17, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 12),
                     SizedBox(
                       height: 290,
@@ -168,7 +168,7 @@ class _Perk extends StatelessWidget {
           children: [
             Icon(icon, size: 20, color: scheme.primary),
             const SizedBox(height: 4),
-            Text(context.t(text), textAlign: TextAlign.center, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
+            Text(context.t(text), textAlign: TextAlign.center, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
           ],
         ),
       ),

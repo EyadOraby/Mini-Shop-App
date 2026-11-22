@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makers_market/cubits/cart_cubit.dart';
@@ -41,8 +41,8 @@ class _ShellState extends State<Shell> {
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: [
           NavigationDestination(
-            icon: Icon(Icons.storefront_outlined),
-            selectedIcon: Icon(Icons.storefront_rounded),
+            icon: const Icon(Icons.storefront_outlined),
+            selectedIcon: const Icon(Icons.storefront_rounded),
             label: context.t('Shop'),
           ),
           NavigationDestination(
@@ -60,8 +60,8 @@ class _ShellState extends State<Shell> {
             label: context.t('Cart'),
           ),
           NavigationDestination(
-            icon: Icon(Icons.receipt_long_outlined),
-            selectedIcon: Icon(Icons.receipt_long_rounded),
+            icon: const Icon(Icons.receipt_long_outlined),
+            selectedIcon: const Icon(Icons.receipt_long_rounded),
             label: context.t('Orders'),
           ),
         ],

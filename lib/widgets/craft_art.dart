@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Product artwork drawn in code, in one flat cut-paper style: an arched
 /// niche, a soft shadow and the object with its craft's pattern band.

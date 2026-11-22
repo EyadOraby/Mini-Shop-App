@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:makers_market/app/theme.dart';
 import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -123,7 +123,7 @@ class _OrderCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            Text('${context.t('Total')} ${money(order.total)}', style: TextStyle(fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
+            Text('${context.t('Total')} ${money(order.total)}', style: const TextStyle(fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
           ],
         ),
       ),

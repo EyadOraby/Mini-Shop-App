@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The Maker's Market palette: fired clay, Akhmim indigo and sand, with
 /// olive and saffron from the crafts themselves.

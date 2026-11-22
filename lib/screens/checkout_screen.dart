@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:makers_market/app/theme.dart';
@@ -77,7 +77,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               controller: _name,
               textInputAction: TextInputAction.next,
               autofillHints: const [AutofillHints.name],
-              decoration: InputDecoration(labelText: context.t('Full name'), prefixIcon: Icon(Icons.person_outline)),
+              decoration: InputDecoration(labelText: context.t('Full name'), prefixIcon: const Icon(Icons.person_outline)),
               validator: (v) => required(v, 'name'),
             ),
             const SizedBox(height: 12),
@@ -85,7 +85,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               controller: _address,
               textInputAction: TextInputAction.next,
               autofillHints: const [AutofillHints.streetAddressLine1],
-              decoration: InputDecoration(labelText: context.t('Street address'), prefixIcon: Icon(Icons.home_outlined)),
+              decoration: InputDecoration(labelText: context.t('Street address'), prefixIcon: const Icon(Icons.home_outlined)),
               validator: (v) => required(v, 'address'),
             ),
             const SizedBox(height: 12),
@@ -95,7 +95,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: TextFormField(
                     controller: _city,
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: context.t('City'), prefixIcon: Icon(Icons.location_city_outlined)),
+                    decoration: InputDecoration(labelText: context.t('City'), prefixIcon: const Icon(Icons.location_city_outlined)),
                     validator: (v) => required(v, 'city'),
                   ),
                 ),
@@ -105,7 +105,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     controller: _phone,
                     keyboardType: TextInputType.phone,
                     autofillHints: const [AutofillHints.telephoneNumber],
-                    decoration: InputDecoration(labelText: context.t('Phone'), prefixIcon: Icon(Icons.phone_outlined)),
+                    decoration: InputDecoration(labelText: context.t('Phone'), prefixIcon: const Icon(Icons.phone_outlined)),
                     validator: validatePhone,
                   ),
                 ),
@@ -130,7 +130,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   child: ListTile(
                     onTap: () => setState(() => _payment = label),
                     leading: Icon(icon),
-                    title: Text(context.t(label), style: TextStyle(fontWeight: FontWeight.w700)),
+                    title: Text(context.t(label), style: const TextStyle(fontWeight: FontWeight.w700)),
                     subtitle: Text(context.t(note)),
                     trailing: Icon(
                       _payment == label ? Icons.radio_button_checked : Icons.radio_button_off,
@@ -208,7 +208,7 @@ class OrderPlacedScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 28),
-              Text(context.t('Order placed!'), style: TextStyle(fontSize: 26, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
+              Text(context.t('Order placed!'), style: const TextStyle(fontSize: 26, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
               const SizedBox(height: 10),
               Text(
                 'Thanks, ${order.name.split(' ').first}. Order ${order.id} is on its way to ${order.address}.',
