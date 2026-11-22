@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_shop/cubits/product_cubit.dart';
-import 'package:mini_shop/models/product_model.dart';
-import 'package:mini_shop/repositories/product_repository.dart';
-import 'package:mini_shop/services/api_service.dart';
+import 'package:makers_market/cubits/product_cubit.dart';
+import 'package:makers_market/models/product_model.dart';
+import 'package:makers_market/repositories/product_repository.dart';
+import 'package:makers_market/services/api_service.dart';
 
 Product product(int id, String title, double price, String category) => Product(
       id: id,

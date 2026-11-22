@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/app/strings.dart';
+import 'package:makers_market/widgets/craft_art.dart';
+import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/admin/admin_dashboard.dart';
-import 'package:mini_shop/app/theme.dart';
-import 'package:mini_shop/cubits/orders_cubit.dart';
-import 'package:mini_shop/cubits/product_cubit.dart';
-import 'package:mini_shop/widgets/common.dart';
-import 'package:mini_shop/widgets/product_card.dart';
+import 'package:makers_market/admin/admin_dashboard.dart';
+import 'package:makers_market/app/theme.dart';
+import 'package:makers_market/cubits/orders_cubit.dart';
+import 'package:makers_market/cubits/product_cubit.dart';
+import 'package:makers_market/widgets/common.dart';
+import 'package:makers_market/widgets/product_card.dart';
 
 const _sortLabels = {
   ProductSort.featured: 'Featured',
@@ -33,7 +34,7 @@ class ShopScreen extends StatelessWidget {
             slivers: [
               SliverAppBar(
                 floating: true,
-                title: Text(context.t('Mini Shop')),
+                title: Text(context.t("Maker's Market")),
                 actions: [
                   IconButton(
                     tooltip: context.t('Language'),
@@ -62,7 +63,7 @@ class ShopScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(context.t('Find something you love'),
+                      Text(context.t('Every piece is made by hand, so each one is a little different.'),
                           style: TextStyle(color: scheme.onSurfaceVariant, fontWeight: FontWeight.w500)),
                       const SizedBox(height: 12),
                       Row(
@@ -135,7 +136,7 @@ class ShopScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(state.category == null ? context.t('Popular now') : context.t(titleCase(state.category!)),
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                          style: const TextStyle(fontSize: 18, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
                       const Spacer(),
                       Text('${products.length} ${context.t('items')}', style: TextStyle(color: scheme.onSurfaceVariant)),
                     ],
@@ -192,40 +193,81 @@ class ShopScreen extends StatelessWidget {
 class _PromoBanner extends StatelessWidget {
   const _PromoBanner();
 
+  static const _pieces = [
+    CraftArtSpec('vase', Color(0xFFB5532C), Color(0xFFF3EADB), 'waves'),
+    CraftArtSpec('basket', Color(0xFFD9A441), Color(0xFFC9786A), 'zigzag'),
+    CraftArtSpec('lantern', Color(0xFF2F6F6A), Color(0xFFD9A441), 'dots'),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 18, 12, 18),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
-        gradient: const LinearGradient(colors: [brand, Color(0xFF14B39B)]),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(8)),
-                  child: Text(context.t('New here?'),
-                      style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700)),
-                ),
-                const SizedBox(height: 8),
-                Text(context.t('20% off your first order'),
-                    style: TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w800)),
-                const SizedBox(height: 4),
-                Text(context.t('Use code WELCOME20 at checkout. Free shipping over \$100.'),
-                    style: TextStyle(color: Colors.white70, fontSize: 12.5, height: 1.35)),
-              ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(6),
+      child: ColoredBox(
+        color: indigo,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 12, 14),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(context.t('Handmade in Egypt').toUpperCase(),
+                            style: const TextStyle(color: saffron, fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 1.4)),
+                        const SizedBox(height: 6),
+                        Text(context.t('Meet the makers'),
+                            style: const TextStyle(fontFamily: display, fontFamilyFallback: displayFallback, color: sand, fontSize: 24, fontWeight: FontWeight.w600, height: 1.1)),
+                        const SizedBox(height: 6),
+                        Text(context.t('Pieces from workshops in Fayoum, Aswan, Siwa and Cairo. 20% off your first order with WELCOME20.'),
+                            style: TextStyle(color: sand.withValues(alpha: .78), fontSize: 12.5, height: 1.4)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    width: 112,
+                    height: 72,
+                    child: Stack(
+                      children: [
+                        for (var k = 0; k < _pieces.length; k++)
+                          Positioned(left: k * 32.0, bottom: 0, width: 56, height: 56, child: CraftArt(spec: _pieces[k], niche: false)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Icon(Icons.local_offer_rounded, color: Colors.white30, size: 64),
-        ],
+            // A Nubian zigzag border along the bottom.
+            SizedBox(height: 10, width: double.infinity, child: CustomPaint(painter: _ZigzagBorder())),
+          ],
+        ),
       ),
     );
   }
+}
+
+class _ZigzagBorder extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final path = Path()..moveTo(0, size.height);
+    var x = 0.0;
+    var up = true;
+    while (x <= size.width + 10) {
+      path.lineTo(x, up ? 0 : size.height);
+      x += 10;
+      up = !up;
+    }
+    path
+      ..lineTo(size.width, size.height)
+      ..close();
+    canvas.drawPath(path, Paint()..color = clay);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class _CategoryChip extends StatelessWidget {
@@ -247,7 +289,9 @@ class _CategoryChip extends StatelessWidget {
         showCheckmark: false,
         avatar: Icon(icon, size: 18, color: selected ? scheme.onPrimary : scheme.onSurfaceVariant),
         label: Text(label),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         labelStyle: TextStyle(
+          height: 1.3,
           fontWeight: FontWeight.w600,
           color: selected ? scheme.onPrimary : scheme.onSurface,
         ),

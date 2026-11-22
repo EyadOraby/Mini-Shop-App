@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/app/strings.dart';
+import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/app/theme.dart';
-import 'package:mini_shop/cubits/cart_cubit.dart';
-import 'package:mini_shop/cubits/orders_cubit.dart';
-import 'package:mini_shop/logic/cart_summary.dart';
-import 'package:mini_shop/models/order_model.dart';
-import 'package:mini_shop/screens/cart_screen.dart';
+import 'package:makers_market/app/theme.dart';
+import 'package:makers_market/cubits/cart_cubit.dart';
+import 'package:makers_market/cubits/orders_cubit.dart';
+import 'package:makers_market/logic/cart_summary.dart';
+import 'package:makers_market/models/order_model.dart';
+import 'package:makers_market/screens/cart_screen.dart';
 
 /// Validates the field is filled in.
 String? required(String? v, String what) => (v == null || v.trim().isEmpty) ? 'Please enter your $what' : null;
@@ -174,7 +174,7 @@ class _Step extends StatelessWidget {
         children: [
           CircleAvatar(radius: 13, backgroundColor: brand, child: Text('$number', style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w700))),
           const SizedBox(width: 10),
-          Text(title, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+          Text(title, style: const TextStyle(fontSize: 17, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
         ],
       ),
     );
@@ -208,7 +208,7 @@ class OrderPlacedScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 28),
-              Text(context.t('Order placed!'), style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
+              Text(context.t('Order placed!'), style: TextStyle(fontSize: 26, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
               const SizedBox(height: 10),
               Text(
                 'Thanks, ${order.name.split(' ').first}. Order ${order.id} is on its way to ${order.address}.',

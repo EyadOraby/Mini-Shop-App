@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:mini_shop/models/order_model.dart';
-import 'package:mini_shop/models/product_model.dart';
+import 'package:makers_market/models/order_model.dart';
+import 'package:makers_market/models/product_model.dart';
 
 const _names = ['Mona Adel', 'Omar Fathy', 'Sara Nabil', 'Youssef Hany', 'Laila Samir', 'Karim Ezz', 'Nour Tarek'];
 const _cities = ['Cairo', 'Giza', 'Alexandria', 'Mansoura', 'Tanta'];

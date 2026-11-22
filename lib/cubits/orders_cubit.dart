@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/core/storage.dart';
-import 'package:mini_shop/logic/cart_summary.dart';
-import 'package:mini_shop/models/cart_item_model.dart';
-import 'package:mini_shop/models/order_model.dart';
+import 'package:makers_market/core/storage.dart';
+import 'package:makers_market/logic/cart_summary.dart';
+import 'package:makers_market/models/cart_item_model.dart';
+import 'package:makers_market/models/order_model.dart';
 
 /// Past orders, newest first.
 class OrdersCubit extends Cubit<List<Order>> {

@@ -1,5 +1,5 @@
-name: mini_shop
-description: "Mini Shop: a Flutter shopping app with BLoC, Dio and an offline Hive cart."
+name: makers_market
+description: "The Maker's Market: Egyptian handmade crafts, built with Flutter, BLoC, Dio and Hive."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -60,6 +60,22 @@ flutter:
   uses-material-design: true
   assets:
     - assets/products.json
+
+  # Brand type (all SIL Open Font License, see assets/fonts/OFL-*.txt).
+  fonts:
+    - family: Fraunces
+      fonts:
+        - asset: assets/fonts/Fraunces.ttf
+    - family: WorkSans
+      fonts:
+        - asset: assets/fonts/WorkSans.ttf
+    - family: ReadexPro
+      fonts:
+        - asset: assets/fonts/ReadexPro.ttf
+    - family: Amiri
+      fonts:
+        - asset: assets/fonts/Amiri-Bold.ttf
+          weight: 700
 
   # To add assets to your application, add an assets section, like this:
   # assets:

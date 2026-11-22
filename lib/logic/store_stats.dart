@@ -1,5 +1,5 @@
-import 'package:mini_shop/models/order_model.dart';
-import 'package:mini_shop/models/product_model.dart';
+import 'package:makers_market/models/order_model.dart';
+import 'package:makers_market/models/product_model.dart';
 
 /// Figures for the admin dashboard, worked out from the orders and catalog.
 class StoreStats {

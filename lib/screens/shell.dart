@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/app/strings.dart';
+import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/cubits/cart_cubit.dart';
-import 'package:mini_shop/cubits/wishlist_cubit.dart';
-import 'package:mini_shop/screens/cart_screen.dart';
-import 'package:mini_shop/screens/orders_wishlist_screens.dart';
-import 'package:mini_shop/screens/shop_screen.dart';
+import 'package:makers_market/cubits/cart_cubit.dart';
+import 'package:makers_market/cubits/wishlist_cubit.dart';
+import 'package:makers_market/screens/cart_screen.dart';
+import 'package:makers_market/screens/orders_wishlist_screens.dart';
+import 'package:makers_market/screens/shop_screen.dart';
 
 enum ShopTab { shop, wishlist, cart, orders }
 

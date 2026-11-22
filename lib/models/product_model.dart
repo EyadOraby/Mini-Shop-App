@@ -8,6 +8,10 @@ class Product {
   final double rating;
   final int ratingCount;
 
+  /// The workshop that made it and where it is.
+  final String maker;
+  final String region;
+
   const Product({
     required this.id,
     required this.title,
@@ -17,6 +21,8 @@ class Product {
     required this.image,
     this.rating = 0,
     this.ratingCount = 0,
+    this.maker = '',
+    this.region = '',
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -30,6 +36,8 @@ class Product {
       image: json['image'] as String? ?? '',
       rating: (rating?['rate'] as num?)?.toDouble() ?? 0,
       ratingCount: (rating?['count'] as num?)?.toInt() ?? 0,
+      maker: json['maker'] as String? ?? '',
+      region: json['region'] as String? ?? '',
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/core/storage.dart';
+import 'package:makers_market/core/storage.dart';
 
 /// Ids of saved products, kept on the device.
 class WishlistCubit extends Cubit<Set<int>> {

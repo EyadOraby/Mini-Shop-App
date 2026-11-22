@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/app/strings.dart';
-import 'package:mini_shop/app/theme.dart';
+import 'package:makers_market/widgets/craft_art.dart';
+import 'package:makers_market/app/strings.dart';
+import 'package:makers_market/app/theme.dart';
 
 /// A product photo on a soft, always-light background (store photos are white).
 class ProductImage extends StatelessWidget {
@@ -12,10 +13,21 @@ class ProductImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final art = CraftArtSpec.parse(url);
+    final paper = Theme.of(context).brightness == Brightness.dark ? const Color(0xFF2A2420) : const Color(0xFFF6EEE2);
+    if (art != null) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(radius),
+        child: ColoredBox(
+          color: paper,
+          child: Padding(padding: EdgeInsets.all(padding * .25), child: Center(child: CraftArt(spec: art, niche: padding > 8))),
+        ),
+      );
+    }
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
       child: ColoredBox(
-        color: Colors.white,
+        color: paper,
         child: Padding(
           padding: EdgeInsets.all(padding),
           child: Image.network(
@@ -129,7 +141,7 @@ class EmptyState extends StatelessWidget {
               child: Icon(icon, size: 44, color: scheme.onPrimaryContainer),
             ),
             const SizedBox(height: 20),
-            Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800)),
+            Text(title, style: const TextStyle(fontSize: 20, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             Text(message, textAlign: TextAlign.center, style: TextStyle(color: scheme.onSurfaceVariant, height: 1.4)),
             if (action != null) ...[const SizedBox(height: 20), action!],
@@ -144,10 +156,19 @@ String titleCase(String value) =>
     value.split(' ').map((w) => w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}').join(' ');
 
 IconData categoryIcon(String category) {
-  final c = category.toLowerCase();
-  if (c.contains('jewel')) return Icons.diamond_outlined;
-  if (c.contains('electronic')) return Icons.headphones_outlined;
-  if (c.contains('women')) return Icons.woman_outlined;
-  if (c.contains('men')) return Icons.man_outlined;
+  switch (category.toLowerCase()) {
+    case 'pottery':
+      return Icons.local_florist_outlined;
+    case 'textiles':
+      return Icons.texture_rounded;
+    case 'baskets':
+      return Icons.shopping_basket_outlined;
+    case 'lighting':
+      return Icons.light_outlined;
+    case 'glass':
+      return Icons.local_drink_outlined;
+    case 'jewellery':
+      return Icons.diamond_outlined;
+  }
   return Icons.category_outlined;
 }

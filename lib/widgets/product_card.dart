@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/app/strings.dart';
+import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/app/theme.dart';
-import 'package:mini_shop/cubits/cart_cubit.dart';
-import 'package:mini_shop/cubits/wishlist_cubit.dart';
-import 'package:mini_shop/logic/cart_summary.dart';
-import 'package:mini_shop/models/product_model.dart';
-import 'package:mini_shop/screens/product_details_screen.dart';
-import 'package:mini_shop/widgets/common.dart';
+import 'package:makers_market/app/theme.dart';
+import 'package:makers_market/cubits/cart_cubit.dart';
+import 'package:makers_market/cubits/wishlist_cubit.dart';
+import 'package:makers_market/logic/cart_summary.dart';
+import 'package:makers_market/models/product_model.dart';
+import 'package:makers_market/screens/product_details_screen.dart';
+import 'package:makers_market/widgets/common.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({super.key, required this.product});
@@ -51,8 +51,17 @@ class ProductCard extends StatelessWidget {
                 product.title,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13.5, height: 1.25),
+                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5, height: 1.25),
               ),
+              if (product.maker.isNotEmpty) ...[
+                const SizedBox(height: 2),
+                Text(
+                  product.region.isEmpty ? product.maker : '${product.maker} · ${product.region.split(',').first}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 11.5, color: scheme.onSurfaceVariant),
+                ),
+              ],
               const SizedBox(height: 4),
               RatingStars(rating: product.rating, size: 13),
               const SizedBox(height: 6),
@@ -61,7 +70,7 @@ class ProductCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       money(product.price),
-                      style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16, color: scheme.primary),
+                      style: TextStyle(fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600, fontSize: 17, color: scheme.primary),
                     ),
                   ),
                   SizedBox(
@@ -101,7 +110,7 @@ class _RoundIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: Theme.of(context).cardTheme.color,
       shape: const CircleBorder(),
       elevation: 1,
       child: IconButton(

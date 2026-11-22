@@ -3,29 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mini_shop/admin/admin_dashboard.dart';
-import 'package:mini_shop/admin/sample_orders.dart';
-import 'package:mini_shop/app/theme.dart';
-import 'package:mini_shop/core/storage.dart';
-import 'package:mini_shop/cubits/cart_cubit.dart';
-import 'package:mini_shop/cubits/orders_cubit.dart';
-import 'package:mini_shop/cubits/product_cubit.dart';
-import 'package:mini_shop/cubits/wishlist_cubit.dart';
-import 'package:mini_shop/repositories/product_repository.dart';
-import 'package:mini_shop/screens/checkout_screen.dart';
-import 'package:mini_shop/screens/product_details_screen.dart';
-import 'package:mini_shop/screens/shell.dart';
-import 'package:mini_shop/services/api_service.dart';
+import 'package:makers_market/admin/admin_dashboard.dart';
+import 'package:makers_market/admin/sample_orders.dart';
+import 'package:makers_market/app/theme.dart';
+import 'package:makers_market/core/storage.dart';
+import 'package:makers_market/cubits/cart_cubit.dart';
+import 'package:makers_market/cubits/orders_cubit.dart';
+import 'package:makers_market/cubits/product_cubit.dart';
+import 'package:makers_market/cubits/wishlist_cubit.dart';
+import 'package:makers_market/repositories/product_repository.dart';
+import 'package:makers_market/screens/checkout_screen.dart';
+import 'package:makers_market/screens/product_details_screen.dart';
+import 'package:makers_market/screens/shell.dart';
+import 'package:makers_market/services/api_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  final store = await HiveStore.open('mini_shop');
-  runApp(MiniShopApp(store: store));
+  final store = await HiveStore.open('makers_market');
+  runApp(MakersMarketApp(store: store));
 }
 
-class MiniShopApp extends StatelessWidget {
-  const MiniShopApp({super.key, required this.store, this.url});
+class MakersMarketApp extends StatelessWidget {
+  const MakersMarketApp({super.key, required this.store, this.url});
 
   final KeyValueStore store;
 
@@ -64,7 +64,7 @@ class MiniShopApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             debugShowCheckedModeBanner: false,
-            title: 'Mini Shop',
+            title: "The Maker's Market",
             theme: buildTheme(Brightness.light),
             darkTheme: buildTheme(Brightness.dark),
             themeMode: mode,

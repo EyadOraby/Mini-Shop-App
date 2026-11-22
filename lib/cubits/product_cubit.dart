@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/models/product_model.dart';
-import 'package:mini_shop/repositories/product_repository.dart';
+import 'package:makers_market/models/product_model.dart';
+import 'package:makers_market/repositories/product_repository.dart';
 
 /// How the product grid is ordered.
 enum ProductSort { featured, priceLowHigh, priceHighLow, name }

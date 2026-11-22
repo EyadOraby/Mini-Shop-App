@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:mini_shop/core/storage.dart';
-import 'package:mini_shop/models/product_model.dart';
-import 'package:mini_shop/services/api_service.dart';
+import 'package:makers_market/core/storage.dart';
+import 'package:makers_market/models/product_model.dart';
+import 'package:makers_market/services/api_service.dart';
 
 /// Loads the catalog from the API, falling back to the last good copy on the
 /// device and then to a copy bundled with the app, so the shop always opens.
@@ -40,8 +40,7 @@ class ProductRepository {
     }
   }
 
-  Future<Product> getProductDetails(int id) async {
-    final response = await apiService.fetchProductById(id);
-    return Product.fromJson(Map<String, dynamic>.from(response.data as Map));
-  }
+  /// The catalogue is one small file, so details come from the same list.
+  Future<Product> getProductDetails(int id) async =>
+      (await getAllProducts()).firstWhere((p) => p.id == id);
 }

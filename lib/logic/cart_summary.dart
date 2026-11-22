@@ -1,11 +1,11 @@
-import 'package:mini_shop/models/cart_item_model.dart';
+import 'package:makers_market/models/cart_item_model.dart';
 
 /// Promo codes the shop accepts, as a fraction off the subtotal.
-const promoCodes = {'MINI10': 0.10, 'WELCOME20': 0.20};
+const promoCodes = {'MAKERS10': 0.10, 'WELCOME20': 0.20};
 
 /// Orders at or above this subtotal ship for free.
-const freeShippingFrom = 100.0;
-const shippingFee = 5.0;
+const freeShippingFrom = 2000.0;
+const shippingFee = 80.0;
 
 /// Everything the cart and checkout show, computed in one place.
 class CartSummary {
@@ -45,4 +45,8 @@ class CartSummary {
   static double _round(double v) => (v * 100).roundToDouble() / 100;
 }
 
-String money(double v) => '\$${v.toStringAsFixed(2)}';
+/// Prices are whole Egyptian pounds: EGP 1,450.
+String money(double v) {
+  final digits = v.round().abs().toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => ',');
+  return '${v < 0 ? '-' : ''}EGP $digits';
+}

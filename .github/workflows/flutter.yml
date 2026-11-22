@@ -28,7 +28,7 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze --no-fatal-infos
       - run: flutter test
-      - run: flutter build web --release --base-href /Mini-Shop-App/app/ --pwa-strategy=none
+      - run: flutter build web --release --base-href /makers-market/app/ --pwa-strategy=none
       - name: Put the landing page at the root and the app under /app
         run: |
           mkdir -p _site
@@ -74,6 +74,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cp build/app/outputs/flutter-apk/app-release.apk mini-shop.apk
+          cp build/app/outputs/flutter-apk/app-release.apk makers-market.apk
           gh release view android >/dev/null 2>&1 || gh release create android --title "Android app" --notes "Latest Android build of the main branch."
-          gh release upload android mini-shop.apk --clobber
+          gh release upload android makers-market.apk --clobber

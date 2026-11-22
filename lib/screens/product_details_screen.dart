@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/app/strings.dart';
+import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/app/theme.dart';
-import 'package:mini_shop/cubits/cart_cubit.dart';
-import 'package:mini_shop/cubits/product_cubit.dart';
-import 'package:mini_shop/cubits/wishlist_cubit.dart';
-import 'package:mini_shop/logic/cart_summary.dart';
-import 'package:mini_shop/models/product_model.dart';
-import 'package:mini_shop/widgets/common.dart';
-import 'package:mini_shop/widgets/product_card.dart';
+import 'package:makers_market/app/theme.dart';
+import 'package:makers_market/cubits/cart_cubit.dart';
+import 'package:makers_market/cubits/product_cubit.dart';
+import 'package:makers_market/cubits/wishlist_cubit.dart';
+import 'package:makers_market/logic/cart_summary.dart';
+import 'package:makers_market/models/product_model.dart';
+import 'package:makers_market/widgets/common.dart';
+import 'package:makers_market/widgets/product_card.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({super.key, required this.productId});
@@ -89,14 +89,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   const SizedBox(height: 12),
                   Text(product.title,
-                      style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, height: 1.25)),
+                      style: const TextStyle(fontSize: 22, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600, height: 1.25)),
                   const SizedBox(height: 10),
                   Text(money(product.price),
-                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800, color: scheme.primary)),
+                      style: TextStyle(fontSize: 26, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600, color: scheme.primary)),
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      _Perk(icon: Icons.local_shipping_outlined, text: context.t('Free over \$100')),
+                      _Perk(icon: Icons.local_shipping_outlined, text: context.t('Free over EGP 2,000')),
                       SizedBox(width: 10),
                       _Perk(icon: Icons.replay_rounded, text: context.t('30-day returns')),
                       SizedBox(width: 10),
@@ -104,7 +104,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Text(context.t('About this item'), style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+                  Text(context.t('About this item'), style: TextStyle(fontSize: 17, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   AnimatedSize(
                     duration: const Duration(milliseconds: 250),
@@ -119,9 +119,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     onPressed: () => setState(() => _expanded = !_expanded),
                     child: Text(_expanded ? context.t('Show less') : context.t('Read more')),
                   ),
+                  if (product.maker.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    _MakerCard(maker: product.maker, region: product.region),
+                  ],
                   if (related.isNotEmpty) ...[
                     const SizedBox(height: 12),
-                    Text(context.t('You may also like'), style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800)),
+                    Text(context.t('You may also like'), style: TextStyle(fontSize: 17, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 12),
                     SizedBox(
                       height: 290,
@@ -200,7 +204,53 @@ class _BuyBar extends StatelessWidget {
                     ..hideCurrentSnackBar()
                     ..showSnackBar(SnackBar(content: Text('${context.t('Added to your cart')}: $quantity')));
                 },
-                child: Text('${context.t('Add to cart')} · ${money(product.price * quantity)}'),
+                child: Text(quantity > 1 ? '${context.t('Add to cart')} · ${money(product.price * quantity)}' : context.t('Add to cart'), maxLines: 1, overflow: TextOverflow.ellipsis),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MakerCard extends StatelessWidget {
+  const _MakerCard({required this.maker, required this.region});
+
+  final String maker;
+  final String region;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final initials = maker.split(' ').where((w) => w.isNotEmpty).take(2).map((w) => w[0]).join();
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 24,
+              backgroundColor: scheme.secondary,
+              child: Text(initials, style: TextStyle(fontFamily: display, fontFamilyFallback: displayFallback, color: scheme.surface, fontWeight: FontWeight.w600)),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(context.t('Meet the maker').toUpperCase(),
+                      style: TextStyle(fontSize: 11, letterSpacing: 1.2, fontWeight: FontWeight.w700, color: scheme.primary)),
+                  const SizedBox(height: 2),
+                  Text(maker, style: const TextStyle(fontFamily: display, fontFamilyFallback: displayFallback, fontSize: 17, fontWeight: FontWeight.w600)),
+                  Row(
+                    children: [
+                      Icon(Icons.place_outlined, size: 14, color: scheme.onSurfaceVariant),
+                      const SizedBox(width: 4),
+                      Expanded(child: Text(region, style: TextStyle(fontSize: 12.5, color: scheme.onSurfaceVariant))),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],

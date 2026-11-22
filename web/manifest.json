@@ -1,6 +1,6 @@
 {
-    "name": "Mini Shop",
-    "short_name": "Mini Shop",
+    "name": "The Maker's Market",
+    "short_name": "Maker's Market",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/app/strings.dart';
+import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/app/theme.dart';
-import 'package:mini_shop/cubits/cart_cubit.dart';
-import 'package:mini_shop/logic/cart_summary.dart';
-import 'package:mini_shop/screens/checkout_screen.dart';
-import 'package:mini_shop/widgets/common.dart';
+import 'package:makers_market/app/theme.dart';
+import 'package:makers_market/cubits/cart_cubit.dart';
+import 'package:makers_market/logic/cart_summary.dart';
+import 'package:makers_market/screens/checkout_screen.dart';
+import 'package:makers_market/widgets/common.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key, this.onShop});
@@ -77,7 +77,7 @@ class CartScreen extends StatelessWidget {
                                           children: [
                                             Text(money(item.price * item.quantity),
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight.w800,
+                                                    fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600,
                                                     color: Theme.of(context).colorScheme.primary)),
                                             const Spacer(),
                                             QuantityStepper(
@@ -181,7 +181,7 @@ class _PromoFieldState extends State<_PromoField> {
       controller: _controller,
       textCapitalization: TextCapitalization.characters,
       decoration: InputDecoration(
-        hintText: context.t('Promo code (try MINI10)'),
+        hintText: context.t('Promo code (try MAKERS10)'),
         prefixIcon: const Icon(Icons.local_offer_outlined),
         errorText: _error,
         suffixIcon: TextButton(

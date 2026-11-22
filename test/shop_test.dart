@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_shop/core/storage.dart';
-import 'package:mini_shop/cubits/cart_cubit.dart';
-import 'package:mini_shop/cubits/orders_cubit.dart';
-import 'package:mini_shop/cubits/wishlist_cubit.dart';
-import 'package:mini_shop/logic/cart_summary.dart';
-import 'package:mini_shop/models/cart_item_model.dart';
-import 'package:mini_shop/models/order_model.dart';
-import 'package:mini_shop/models/product_model.dart';
-import 'package:mini_shop/repositories/product_repository.dart';
-import 'package:mini_shop/screens/checkout_screen.dart';
-import 'package:mini_shop/services/api_service.dart';
+import 'package:makers_market/core/storage.dart';
+import 'package:makers_market/cubits/cart_cubit.dart';
+import 'package:makers_market/cubits/orders_cubit.dart';
+import 'package:makers_market/cubits/wishlist_cubit.dart';
+import 'package:makers_market/logic/cart_summary.dart';
+import 'package:makers_market/models/cart_item_model.dart';
+import 'package:makers_market/models/order_model.dart';
+import 'package:makers_market/models/product_model.dart';
+import 'package:makers_market/repositories/product_repository.dart';
+import 'package:makers_market/screens/checkout_screen.dart';
+import 'package:makers_market/services/api_service.dart';
 
-const shirt = Product(id: 1, title: 'Shirt', price: 20, description: '', category: 'men', image: '');
-const ring = Product(id: 2, title: 'Ring', price: 90, description: '', category: 'jewelery', image: '');
+const shirt = Product(id: 1, title: 'Bowl', price: 400, description: '', category: 'pottery', image: '');
+const ring = Product(id: 2, title: 'Lantern', price: 1800, description: '', category: 'lighting', image: '');
 
 CartItem line(Product p, int q) =>
     CartItem(productId: p.id, quantity: q, name: p.title, price: p.price, imageUrl: p.image);
@@ -22,21 +22,21 @@ void main() {
   group('CartSummary', () {
     test('charges shipping under the threshold and drops it above', () {
       final small = CartSummary.of([line(shirt, 2)]);
-      expect(small.subtotal, 40);
+      expect(small.subtotal, 800);
       expect(small.shipping, shippingFee);
-      expect(small.total, 45);
-      expect(small.toFreeShipping, 60);
+      expect(small.total, 880);
+      expect(small.toFreeShipping, 1200);
 
       final big = CartSummary.of([line(shirt, 1), line(ring, 1)]);
       expect(big.shipping, 0);
-      expect(big.total, 110);
+      expect(big.total, 2200);
     });
 
     test('applies valid promo codes, ignoring case and spaces', () {
-      final s = CartSummary.of([line(ring, 1)], promoCode: ' mini10 ');
-      expect(s.promoCode, 'MINI10');
-      expect(s.discount, 9);
-      expect(s.total, 90 - 9 + shippingFee);
+      final s = CartSummary.of([line(ring, 1)], promoCode: ' makers10 ');
+      expect(s.promoCode, 'MAKERS10');
+      expect(s.discount, 180);
+      expect(s.total, 1800 - 180 + shippingFee);
       expect(CartSummary.of([line(ring, 1)], promoCode: 'NOPE').discount, 0);
     });
 
@@ -73,7 +73,7 @@ void main() {
       final cart = CartCubit(MemoryStore())..add(ring);
       expect(cart.applyPromo('FREE100'), isFalse);
       expect(cart.applyPromo('welcome20'), isTrue);
-      expect(cart.state.summary.discount, 18);
+      expect(cart.state.summary.discount, 360);
     });
   });
 
@@ -97,11 +97,11 @@ void main() {
         address: 'Giza',
         payment: 'Card',
       );
-      expect(order.total, 45);
+      expect(order.total, 880);
       expect(order.itemCount, 2);
       final restored = OrdersCubit(store).state.single;
       expect(restored.id, order.id);
-      expect(restored.lines.single.name, 'Shirt');
+      expect(restored.lines.single.name, 'Bowl');
     });
 
     test('status moves from processing to shipped to delivered', () {

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/app/strings.dart';
+import 'package:makers_market/app/theme.dart';
+import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/admin/sample_orders.dart';
-import 'package:mini_shop/cubits/orders_cubit.dart';
-import 'package:mini_shop/cubits/product_cubit.dart';
-import 'package:mini_shop/logic/cart_summary.dart';
-import 'package:mini_shop/logic/store_stats.dart';
-import 'package:mini_shop/models/order_model.dart';
-import 'package:mini_shop/models/product_model.dart';
-import 'package:mini_shop/widgets/common.dart';
+import 'package:makers_market/admin/sample_orders.dart';
+import 'package:makers_market/cubits/orders_cubit.dart';
+import 'package:makers_market/cubits/product_cubit.dart';
+import 'package:makers_market/logic/cart_summary.dart';
+import 'package:makers_market/logic/store_stats.dart';
+import 'package:makers_market/models/order_model.dart';
+import 'package:makers_market/models/product_model.dart';
+import 'package:makers_market/widgets/common.dart';
 
 enum AdminSection { overview, products, orders }
 
@@ -210,7 +211,7 @@ class _Kpi extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FittedBox(
-                  child: Text(value, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800, letterSpacing: -0.5)),
+                  child: Text(value, style: const TextStyle(fontSize: 24, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
                 ),
                 Text(label, style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13)),
               ],
@@ -422,7 +423,7 @@ void _showOrder(BuildContext context, Order order, DateTime now) {
             const Divider(height: 16),
             Align(
               alignment: Alignment.centerRight,
-              child: Text('${context.t('Total')} ${money(order.total)}', style: TextStyle(fontWeight: FontWeight.w800)),
+              child: Text('${context.t('Total')} ${money(order.total)}', style: TextStyle(fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
             ),
           ],
         ),

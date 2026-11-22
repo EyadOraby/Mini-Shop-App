@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/app/strings.dart';
+import 'package:makers_market/app/theme.dart';
+import 'package:makers_market/app/strings.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/cubits/orders_cubit.dart';
-import 'package:mini_shop/cubits/product_cubit.dart';
-import 'package:mini_shop/cubits/wishlist_cubit.dart';
-import 'package:mini_shop/logic/cart_summary.dart';
-import 'package:mini_shop/models/order_model.dart';
-import 'package:mini_shop/widgets/common.dart';
-import 'package:mini_shop/widgets/product_card.dart';
+import 'package:makers_market/cubits/orders_cubit.dart';
+import 'package:makers_market/cubits/product_cubit.dart';
+import 'package:makers_market/cubits/wishlist_cubit.dart';
+import 'package:makers_market/logic/cart_summary.dart';
+import 'package:makers_market/models/order_model.dart';
+import 'package:makers_market/widgets/common.dart';
+import 'package:makers_market/widgets/product_card.dart';
 
 class WishlistScreen extends StatelessWidget {
   const WishlistScreen({super.key});
@@ -84,7 +85,7 @@ class _OrderCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(order.id, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+                Text(order.id, style: const TextStyle(fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600, fontSize: 16)),
                 const Spacer(),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -122,7 +123,7 @@ class _OrderCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            Text('${context.t('Total')} ${money(order.total)}', style: TextStyle(fontWeight: FontWeight.w800)),
+            Text('${context.t('Total')} ${money(order.total)}', style: TextStyle(fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600)),
           ],
         ),
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mini_shop/admin/sample_orders.dart';
-import 'package:mini_shop/logic/store_stats.dart';
-import 'package:mini_shop/models/order_model.dart';
-import 'package:mini_shop/models/product_model.dart';
+import 'package:makers_market/admin/sample_orders.dart';
+import 'package:makers_market/logic/store_stats.dart';
+import 'package:makers_market/models/order_model.dart';
+import 'package:makers_market/models/product_model.dart';
 
 void main() {
   final now = DateTime(2026, 11, 21, 12);

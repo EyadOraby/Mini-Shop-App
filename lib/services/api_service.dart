@@ -1,4 +1,4 @@
-import 'package:mini_shop/constants/app_endpoints.dart';
+import 'package:makers_market/constants/app_endpoints.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {
@@ -13,14 +13,6 @@ class ApiService {
       return await _dio.get(AppEndpoints.getAllProducts);
     } catch (e) {
       throw Exception('Failed to load products');
-    }
-  }
-
-  Future<Response> fetchProductById(int id) async {
-    try {
-      return await _dio.get("${AppEndpoints.getAllProducts}/$id");
-    } catch (e) {
-      throw Exception('Failed to load product details');
     }
   }
 }

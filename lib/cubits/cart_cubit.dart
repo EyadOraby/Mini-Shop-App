@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mini_shop/core/storage.dart';
-import 'package:mini_shop/logic/cart_summary.dart';
-import 'package:mini_shop/models/cart_item_model.dart';
-import 'package:mini_shop/models/product_model.dart';
+import 'package:makers_market/core/storage.dart';
+import 'package:makers_market/logic/cart_summary.dart';
+import 'package:makers_market/models/cart_item_model.dart';
+import 'package:makers_market/models/product_model.dart';
 
 class CartState {
   final List<CartItem> items;
