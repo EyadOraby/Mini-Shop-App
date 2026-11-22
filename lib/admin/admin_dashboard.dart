@@ -415,7 +415,7 @@ void _showOrder(BuildContext context, Order order, DateTime now) {
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Row(
                   children: [
-                    Expanded(child: Text('${l.quantity} × ${l.name}', maxLines: 2, overflow: TextOverflow.ellipsis)),
+                    Expanded(child: Text('${l.quantity} × ${context.t(l.name)}', maxLines: 2, overflow: TextOverflow.ellipsis)),
                     Text(money(l.price * l.quantity)),
                   ],
                 ),
@@ -482,7 +482,7 @@ class _ProductsTableState extends State<_ProductsTable> {
                         const SizedBox(width: 12),
                         ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 260),
-                          child: Text(p.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+                          child: Text(context.t(p.title), maxLines: 1, overflow: TextOverflow.ellipsis),
                         ),
                       ],
                     )),

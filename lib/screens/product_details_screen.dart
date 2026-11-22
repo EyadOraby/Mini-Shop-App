@@ -81,14 +81,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     children: [
                       Chip(
                         avatar: Icon(categoryIcon(product.category), size: 16),
-                        label: Text(context.t(titleCase(product.category))),
-                        visualDensity: VisualDensity.compact,
+                        label: Text(context.t(titleCase(product.category)), style: const TextStyle(height: 1.3)),
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                       ),
                       RatingStars(rating: product.rating, count: product.ratingCount, size: 16),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Text(product.title,
+                  Text(context.t(product.title),
                       style: const TextStyle(fontSize: 22, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600, height: 1.25)),
                   const SizedBox(height: 10),
                   Text(money(product.price),
@@ -109,7 +109,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   AnimatedSize(
                     duration: const Duration(milliseconds: 250),
                     child: Text(
-                      product.description,
+                      context.t(product.description),
                       maxLines: _expanded ? null : 4,
                       overflow: _expanded ? null : TextOverflow.ellipsis,
                       style: TextStyle(height: 1.55, color: scheme.onSurfaceVariant),
@@ -121,7 +121,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   if (product.maker.isNotEmpty) ...[
                     const SizedBox(height: 8),
-                    _MakerCard(maker: product.maker, region: product.region),
+                    _MakerCard(maker: context.t(product.maker), region: context.t(product.region)),
                   ],
                   if (related.isNotEmpty) ...[
                     const SizedBox(height: 12),

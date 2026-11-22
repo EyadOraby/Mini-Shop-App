@@ -48,7 +48,7 @@ class ProductCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                product.title,
+                context.t(product.title),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13.5, height: 1.25),
@@ -56,7 +56,7 @@ class ProductCard extends StatelessWidget {
               if (product.maker.isNotEmpty) ...[
                 const SizedBox(height: 2),
                 Text(
-                  product.region.isEmpty ? product.maker : '${product.maker} · ${product.region.split(',').first}',
+                  product.region.isEmpty ? context.t(product.maker) : '${context.t(product.maker)} · ${context.t(product.region.split(',').first)}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 11.5, color: scheme.onSurfaceVariant),
@@ -84,7 +84,7 @@ class ProductCard extends StatelessWidget {
                         context.read<CartCubit>().add(product);
                         ScaffoldMessenger.of(context)
                           ..hideCurrentSnackBar()
-                          ..showSnackBar(SnackBar(content: Text('${context.t('Added to your cart')}: ${product.title}')));
+                          ..showSnackBar(SnackBar(content: Text('${context.t('Added to your cart')}: ${context.t(product.title)}')));
                       },
                       icon: const Icon(Icons.add_shopping_cart_rounded),
                     ),

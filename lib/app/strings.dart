@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:makers_market/app/catalog_ar.dart';
 
 /// Arabic for Mini Shop, keyed by the English text. Anything missing stays
 /// English; product names and descriptions come from the catalog as-is.
@@ -144,5 +145,5 @@ extension Tr on BuildContext {
   bool get isArabic => Localizations.localeOf(this).languageCode == 'ar';
 
   /// The Arabic for [en] when the app is in Arabic, otherwise [en].
-  String t(String en) => isArabic ? (arabic[en] ?? en) : en;
+  String t(String en) => isArabic ? (arabic[en] ?? catalogArabic[en] ?? en) : en;
 }

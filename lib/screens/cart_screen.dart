@@ -51,7 +51,7 @@ class CartScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context)
                               ..hideCurrentSnackBar()
                               ..showSnackBar(SnackBar(
-                                content: Text('${context.t('Removed')} ${item.name}'),
+                                content: Text('${context.t('Removed')} ${context.t(item.name)}'),
                                 action: removed == null
                                     ? null
                                     : SnackBarAction(label: context.t('Undo'), onPressed: () => cubit.restore(removed)),
@@ -68,7 +68,7 @@ class CartScreen extends StatelessWidget {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(item.name,
+                                        Text(context.t(item.name),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(fontWeight: FontWeight.w700, height: 1.25)),
