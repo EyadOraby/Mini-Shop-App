@@ -197,7 +197,7 @@ class _Kpi extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -211,7 +211,7 @@ class _Kpi extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 FittedBox(
-                  child: Text(value, style: const TextStyle(fontSize: 24, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
+                  child: Text(value, style: const TextStyle(fontSize: 24, height: 1.15, fontFamily: display, fontFamilyFallback: displayFallback, fontWeight: FontWeight.w600, letterSpacing: -0.5)),
                 ),
                 Text(label, style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13)),
               ],
