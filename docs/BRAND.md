@@ -40,3 +40,7 @@ Material Symbols, outlined, one style throughout.
 ## Things to avoid
 
 Gradients, glassy cards, emoji in the interface, stock photography and generic e-commerce copy ("Find something you love").
+
+## Font files
+
+The bundled fonts are trimmed for the web, where Flutter downloads every font before the first frame: variable axes are pinned to the weights the app uses and each font keeps only the script it is used for (Latin or Arabic), with fontTools. Total: 1,381 KB to 505 KB.
